@@ -1,4 +1,5 @@
 ﻿using biblioteca.clases;
+using biblioteca.dtos.carrito;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ namespace Services.Services.carrito
 {
     public class CarritoService : ICarritoService
     {
-        public Carrito create(Carrito carrito)
+        public bool create(CarritoCreateDto carrito)
         {
             throw new NotImplementedException();
         }
@@ -17,17 +18,17 @@ namespace Services.Services.carrito
             throw new NotImplementedException();
         }
 
-        public Carrito findById(int id)
+        public CarritoDto findById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Carrito findByIdUsuario(int idUsuario)
+        public CarritoDto findByIdUsuario(int idUsuario)
         {
             throw new NotImplementedException();
         }
 
-        public Carrito update(int id, Carrito carrito)
+        public bool update(int id, CarritoUpdateDto carrito)
         {
             throw new NotImplementedException();
         }

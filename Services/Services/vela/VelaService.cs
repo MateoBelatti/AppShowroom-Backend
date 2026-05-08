@@ -1,4 +1,5 @@
 ﻿using biblioteca.clases;
+using biblioteca.dtos.vela;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ namespace Services.Services.vela
 {
     public class VelaService : IVelaService
     {
-        public Vela create(Vela vela)
+        public bool create(VelaCreateDto vela)
         {
             throw new NotImplementedException();
         }
@@ -17,17 +18,17 @@ namespace Services.Services.vela
             throw new NotImplementedException();
         }
 
-        public Vela[] findAll()
+        public List<VelaDto> findAll()
         {
             throw new NotImplementedException();
         }
 
-        public Vela findById(int id)
+        public VelaDto findById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Vela update(Vela vela)
+        public bool update(VelaUpdateDto vela)
         {
             throw new NotImplementedException();
         }

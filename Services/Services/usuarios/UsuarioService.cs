@@ -1,4 +1,5 @@
 ﻿using biblioteca.clases;
+using biblioteca.dtos.usuario;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,27 +8,27 @@ namespace Services.Services.usuarios
 {
     public class UsuarioService : IUsuarioService
     {
-        public Usuario create(Usuario usuario)
+        public bool create(UsuarioCreateDto usuario)
         {
             throw new NotImplementedException();
         }
 
-        public void delete(int id)
+        public void delete(int idUsuario)
         {
             throw new NotImplementedException();
         }
 
-        public Usuario[] findAll()
+        public List<UsuarioDto> findAll()
         {
             throw new NotImplementedException();
         }
 
-        public Usuario findById(int id)
+        public UsuarioDto findById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Usuario update(int id, Usuario data)
+        public bool update(int id, UsuarioUpdateDto data)
         {
             throw new NotImplementedException();
         }

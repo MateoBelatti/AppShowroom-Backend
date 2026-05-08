@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using biblioteca.clases;
+using biblioteca.dtos.categoria;
 
 namespace Services.Services.categoria
 {
     public class CategoriaService : ICategoriaService
     {
-        public Categoria create(Categoria data)
+        public bool create(CategoriaCreateDto data)
         {
             throw new NotImplementedException();
         }
@@ -17,17 +18,17 @@ namespace Services.Services.categoria
             throw new NotImplementedException();
         }
 
-        public Categoria[] findAll()
+        public List<CategoriaDto> findAll()
         {
             throw new NotImplementedException();
         }
 
-        public Categoria findById(int id)
+        public CategoriaDto findById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Categoria update(Categoria data)
+        public bool update(CategoriaUpdateDto data)
         {
             throw new NotImplementedException();
         }

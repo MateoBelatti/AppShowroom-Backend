@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using biblioteca.clases;
+using biblioteca.dtos.usuario;
 
 namespace Services.Services.usuarios
 {
     public interface IUsuarioService
     {
-        public Usuario[] findAll();
-        public Usuario findById(int id);
-        public Usuario create(Usuario usuario);
-        public Usuario update(int id,Usuario data);
+        public List<UsuarioDto> findAll();
+        public UsuarioDto findById(int id);
+        public bool create(UsuarioCreateDto usuario);
+        public bool update(int id,UsuarioUpdateDto data);
         public void delete(int idUsuario);
     }
 }

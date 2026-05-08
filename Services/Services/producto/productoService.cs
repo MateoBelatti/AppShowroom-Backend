@@ -1,4 +1,5 @@
 ﻿using biblioteca.clases;
+using biblioteca.dtos.producto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,32 +8,32 @@ namespace Services.Services.producto
 {
     public class productoService : IProductoService
     {
-        public Producto create(Producto producto)
+        public bool create(ProductoCreateDto producto)
         {
             throw new NotImplementedException();
         }
 
-        public void delete(int id)
+        public void delete(int idProducto)
         {
             throw new NotImplementedException();
         }
 
-        public Producto[] findAll()
+        public List<ProductoDto> findAll()
         {
             throw new NotImplementedException();
         }
 
-        public Producto[] findByCategoria(int idCategoria)
+        public List<ProductoDto> findByCategoria(int idCategoria)
         {
             throw new NotImplementedException();
         }
 
-        public Producto findById(int id)
+        public ProductoDto findById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Producto update(Producto producto)
+        public bool update(ProductoUpdateDto producto)
         {
             throw new NotImplementedException();
         }
