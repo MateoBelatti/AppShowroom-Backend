@@ -1,30 +1,43 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using biblioteca;
 using biblioteca.clases;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Repository
 {
     public class CarritoRepository : ICarritoRepository
     {
-        public Task Create(Carrito entity)
+        public readonly CanelaContext _context;
+
+        public CarritoRepository(CanelaContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task Create(Carrito entity)
         {
-            throw new NotImplementedException();
+            await _context.Carritos.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Carrito>> GetAllA()
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            await _context.Carritos
+                .Where(c => c.Id == id)
+                .ExecuteDeleteAsync();
         }
 
-        public Task<Carrito?> GetById(int id)
+        public async Task<IEnumerable<Carrito>> GetAllA()
         {
-            throw new NotImplementedException();
+            return await _context.Carritos.ToListAsync();
+        }
+
+        public async Task<Carrito?> GetById(int id)
+        {
+            return await _context.Carritos.FirstOrDefaultAsync(c => c.Id == id);
         }
     }
 }

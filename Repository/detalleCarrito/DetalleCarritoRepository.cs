@@ -1,35 +1,51 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using biblioteca;
 using biblioteca.clases;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Repository
 {
     public class DetalleCarritoRepository : IDetalleCarritoRepository
     {
-        public Task Create(DetalleCarrito entity)
+        public readonly CanelaContext _context;
+
+        public DetalleCarritoRepository(CanelaContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task DeleteAllByCarritoId(int carritoId)
+        public async Task Create(DetalleCarrito entity)
         {
-            throw new NotImplementedException();
+            await _context.DetallesCarrito.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<DetalleCarrito[]> FindByCarritoID(int carritoId)
+        public async Task DeleteAllByCarritoId(int carritoId)
         {
-            throw new NotImplementedException();
+            await _context.DetallesCarrito
+                .Where(d => d.CarritoID == carritoId)
+                .ExecuteDeleteAsync();
         }
 
-        public Task<DetalleCarrito?> GetById(int id)
+        public async Task<DetalleCarrito[]> FindByCarritoID(int carritoId)
         {
-            throw new NotImplementedException();
+            return await _context.DetallesCarrito
+                .Where(d => d.CarritoID == carritoId)
+                .ToArrayAsync();
         }
 
-        public Task Update(DetalleCarrito entity)
+        public async Task<DetalleCarrito?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.DetallesCarrito.FirstOrDefaultAsync(d => d.Id == id);
+        }
+
+        public async Task Update(DetalleCarrito entity)
+        {
+            _context.DetallesCarrito.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

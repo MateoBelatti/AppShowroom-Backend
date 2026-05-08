@@ -1,45 +1,65 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using biblioteca;
 using biblioteca.clases;
+using biblioteca.types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace Repository
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        public Task<Usuario> Create(Usuario entity)
+        public readonly CanelaContext _context;
+
+        public UsuarioRepository(CanelaContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task Create(Usuario entity)
+        {
+            await _context.Usuarios.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task Delete(int id)
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            await _context.Usuarios
+                .Where(u => u.Id == id)
+                .ExecuteDeleteAsync();
         }
 
         public Task<Usuario?> FindByEmail(string email)
         {
-            throw new NotImplementedException();
+            return _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public Task<Usuario?> FindById(int id)
         {
-            throw new NotImplementedException();
+            return _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public Task<IEnumerable<Usuario>> FindByRol(string rol)
+        public Task<IEnumerable<Usuario>> FindByRol(Rol rol)
         {
-            throw new NotImplementedException();
+            return _context.Usuarios
+                .Where(u => u.Rol == rol)
+                .ToListAsync()
+                .ContinueWith(t => (IEnumerable<Usuario>)t.Result);
         }
 
-        public Task<IEnumerable<Usuario>> GetAll()
+        public async Task<IEnumerable<Usuario>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Usuarios
+                .ToListAsync();
         }
 
-        public Task<Usuario?> Update(Usuario entity)
+        public async Task Update(Usuario entity)
         {
-            throw new NotImplementedException();
+            _context.Usuarios.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

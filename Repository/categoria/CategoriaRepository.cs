@@ -1,35 +1,49 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using biblioteca;
 using biblioteca.clases;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Repository
 {
     public class CategoriaRepository : ICategoriaRepository
     {
-        public Task Create(Categoria entity)
+        public readonly CanelaContext _context;
+
+        public CategoriaRepository(CanelaContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task Delete(int id)
+        public async Task Create(Categoria entity)
         {
-            throw new NotImplementedException();
+            await _context.Categorias.AddAsync(entity);
+            await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<Categoria>> GetAll()
+        public async Task Delete(int id)
         {
-            throw new NotImplementedException();
+            await _context.Categorias
+                .Where(c => c.Id == id)
+                .ExecuteDeleteAsync();
         }
 
-        public Task<Categoria?> GetById(int id)
+        public async Task<IEnumerable<Categoria>> GetAll()
         {
-            throw new NotImplementedException();
+            return await _context.Categorias.ToListAsync();
         }
 
-        public Task Update(Categoria entity)
+        public async Task<Categoria?> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Categorias.FirstOrDefaultAsync(c => c.Id == id);
+        }
+
+        public async Task Update(Categoria entity)
+        {
+            _context.Categorias.Update(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }
