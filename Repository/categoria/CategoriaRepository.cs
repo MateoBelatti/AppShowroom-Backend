@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using biblioteca.clases;
 
-namespace Repository.clases
+namespace Repository
 {
     public class CategoriaRepository : ICategoriaRepository
     {
