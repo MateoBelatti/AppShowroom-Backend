@@ -1,0 +1,15 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using biblioteca.clases;
+
+namespace Repository.clases
+{
+    public interface ICategoriaRepository
+    {
+        Task<IEnumerable<Categoria>> GetAll();
+        Task<Categoria?> GetById(int id);
+        Task Create(Categoria entity);
+        Task Update(Categoria entity);
+        Task Delete(int id);
+    }
+}
