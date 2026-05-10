@@ -5,7 +5,7 @@ using System.Text;
 
 namespace biblioteca.dtos.producto
 {
-    public abstract class ProductoCreateDto
+    public class ProductoCreateDto
     {
         public string Nombre { get; set; } = string.Empty;
 

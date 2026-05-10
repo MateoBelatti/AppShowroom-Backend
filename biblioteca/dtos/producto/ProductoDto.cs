@@ -5,7 +5,7 @@ using System.Text;
 
 namespace biblioteca.dtos.producto
 {
-    public abstract class ProductoDto
+    public class ProductoDto
     {
         public int Id { get; set; }
 
