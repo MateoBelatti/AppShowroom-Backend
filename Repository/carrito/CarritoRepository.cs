@@ -10,7 +10,7 @@ namespace Repository
 {
     public class CarritoRepository : ICarritoRepository
     {
-        public readonly CanelaContext _context;
+        private readonly CanelaContext _context;
 
         public CarritoRepository(CanelaContext context)
         {
@@ -30,7 +30,7 @@ namespace Repository
                 .ExecuteDeleteAsync();
         }
 
-        public async Task<IEnumerable<Carrito>> GetAllA()
+        public async Task<IEnumerable<Carrito>> GetAll()
         {
             return await _context.Carritos.ToListAsync();
         }

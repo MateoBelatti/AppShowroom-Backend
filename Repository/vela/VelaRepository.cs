@@ -10,7 +10,7 @@ namespace Repository
 {
     public class VelaRepository : IVelaRepository
     {
-        public readonly CanelaContext _context;
+        private readonly CanelaContext _context;
 
         public VelaRepository(CanelaContext context)
         {
@@ -25,9 +25,13 @@ namespace Repository
 
         public async Task DeleteAsync(int id)
         {
-            await _context.Velas
-                .Where(v => v.Id == id)
-                .ExecuteDeleteAsync();
+            // Cambiar logica a soft delete como en producto
+            Vela? vela = await _context.Velas.FirstOrDefaultAsync(v => v.Id == id);
+            if (vela != null)
+            {
+                vela.Activo = false;
+                await _context.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Vela>> GetAllAsync()

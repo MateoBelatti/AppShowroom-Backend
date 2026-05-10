@@ -6,7 +6,7 @@ namespace Repository
 {
     public interface ICarritoRepository
     {
-        Task<IEnumerable<Carrito>> GetAllA();
+        Task<IEnumerable<Carrito>> GetAll();
         Task<Carrito?> GetById(int id);
         Task Create(Carrito entity);
         Task DeleteAsync(int id);

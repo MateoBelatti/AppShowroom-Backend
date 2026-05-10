@@ -11,7 +11,7 @@ namespace Repository
 {
     public class UsuarioRepository : IUsuarioRepository
     {
-        public readonly CanelaContext _context;
+        private readonly CanelaContext _context;
 
         public UsuarioRepository(CanelaContext context)
         {
@@ -42,12 +42,11 @@ namespace Repository
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public Task<IEnumerable<Usuario>> FindByRol(Rol rol)
+        public async Task<IEnumerable<Usuario>> FindByRol(Rol rol)
         {
-            return _context.Usuarios
+            return await _context.Usuarios
                 .Where(u => u.Rol == rol)
-                .ToListAsync()
-                .ContinueWith(t => (IEnumerable<Usuario>)t.Result);
+                .ToListAsync(); 
         }
 
         public async Task<IEnumerable<Usuario>> GetAll()

@@ -10,7 +10,7 @@ namespace Repository
 {
     public class DetalleCarritoRepository : IDetalleCarritoRepository
     {
-        public readonly CanelaContext _context;
+        private readonly CanelaContext _context;
 
         public DetalleCarritoRepository(CanelaContext context)
         {

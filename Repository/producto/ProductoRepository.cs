@@ -10,7 +10,7 @@ namespace Repository
 {
     public class ProductoRepository : IProductoRepository
     {
-        public readonly CanelaContext _context;
+        private readonly CanelaContext _context;
 
         public ProductoRepository(CanelaContext context)
         {
@@ -24,7 +24,7 @@ namespace Repository
 
         public async Task Delete(int id)
         {
-            Producto producto = await _context.Productos.FindAsync(id);
+            Producto? producto = await _context.Productos.FindAsync(id);
             if (producto is null) return;
 
             producto.Activo = false;

@@ -10,7 +10,7 @@ namespace Repository
 {
     public class CategoriaRepository : ICategoriaRepository
     {
-        public readonly CanelaContext _context;
+        private readonly CanelaContext _context;
 
         public CategoriaRepository(CanelaContext context)
         {
