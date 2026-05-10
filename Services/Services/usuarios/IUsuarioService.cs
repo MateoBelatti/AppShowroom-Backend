@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using biblioteca.clases;
 using biblioteca.dtos.usuario;
+using System.Threading.Tasks;
 
 namespace Services.Services.usuarios
 {
     public interface IUsuarioService
     {
-        public List<UsuarioDto> findAll();
-        public UsuarioDto findById(int id);
-        public bool create(UsuarioCreateDto usuario);
-        public bool update(int id,UsuarioUpdateDto data);
-        public void delete(int idUsuario);
+        public Task<IEnumerable<UsuarioDto>> findAll();
+        public Task<UsuarioDto> findById(int id);
+        public Task<bool> create(UsuarioCreateDto usuario);
+        public Task<bool> update(int id,UsuarioUpdateDto data);
+        public Task delete(int idUsuario);
     }
 }
