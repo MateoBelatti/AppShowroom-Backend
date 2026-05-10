@@ -1,4 +1,5 @@
 using biblioteca;
+using biblioteca.mappers;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 using Services.Services.carrito;
@@ -31,6 +32,17 @@ builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IVelaRepository, VelaRepository>();
 
+// Inyeccion de Mappers
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<ProductoProfile>();
+    cfg.AddProfile<UsuarioProfile>();
+    cfg.AddProfile<DetalleCarritoProfile>();
+    cfg.AddProfile<CarritoProfile>();
+    cfg.AddProfile<CategoriaProfile>();
+    cfg.AddProfile<VelaProfile>();
+});
+
 // Inyeccion de base de datos
 builder.Services.AddDbContext<CanelaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("canelaConnection")));
@@ -44,6 +56,9 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<CanelaContext>();
+
+    // Aplica las migraciones pendientes al iniciar la aplicación
+    // uso mientras esta en desarrollo
     context.Database.Migrate();
 }
 
