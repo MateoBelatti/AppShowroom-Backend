@@ -16,10 +16,11 @@ namespace Repository
         {
             _context = context;
         }
-        public async Task Create(Producto entity)
+        public async Task<Producto> Create(Producto entity)
         {
-            await _context.Productos.AddAsync(entity);
+            var producto = await _context.Productos.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return producto.Entity;
         }
 
         public async Task Delete(int id)
@@ -54,10 +55,11 @@ namespace Repository
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task Update(Producto entity)
+        public async Task<Producto> Update(Producto entity)
         {
-            _context.Productos.Update(entity);
+            var productoUpdate = _context.Productos.Update(entity);
             await _context.SaveChangesAsync();
+            return productoUpdate.Entity;
         }
 
         public async Task<bool> UpdateActivos(int productoId, int cantidad)

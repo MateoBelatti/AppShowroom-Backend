@@ -17,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Inyección de Interfaces y Servicios
-builder.Services.AddScoped<IProductoService, productoService>();
+builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IDetalleCarritoService, DetalleCarritoService>();
 builder.Services.AddScoped<ICarritoService, CarritoService>();

@@ -1,41 +1,103 @@
 ﻿using biblioteca.clases;
 using biblioteca.dtos.producto;
+using biblioteca.mappers;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Repository;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Services.Services.producto
 {
-    public class productoService : IProductoService
+    public class ProductoService : IProductoService
     {
-        public bool create(ProductoCreateDto producto)
+        private readonly IProductoRepository _productoRepository;
+        private readonly ICategoriaRepository _categoriaRepository;
+        private readonly IMapper _mapper;
+
+        public ProductoService(
+            IProductoRepository productoRepository,
+            ICategoriaRepository categoriaRepository,
+            IMapper mapper
+            )
         {
-            throw new NotImplementedException();
+            _productoRepository = productoRepository;
+            _categoriaRepository = categoriaRepository;
+            _mapper = mapper;
         }
 
-        public void delete(int idProducto)
+        public async Task<ProductoDto> create(ProductoCreateDto producto)
         {
-            throw new NotImplementedException();
+            var nuevoProducto = _mapper.Map<Producto>(producto);
+            if (producto.CategoriasIds != null)
+            {
+                var categorias = await _categoriaRepository.GetAllByIds(producto.CategoriasIds);
+                if (categorias.Count() != producto.CategoriasIds.Count())
+                {
+                    throw new Exception("Una o mas categorias no existen");
+                }
+                nuevoProducto.Categorias = categorias.ToList();
+            }
+            var productoCreado = await _productoRepository.Create(nuevoProducto);
+            return _mapper.Map<ProductoDto>(productoCreado);
         }
 
-        public List<ProductoDto> findAll()
+        public async Task<bool> delete(int idProducto)
         {
-            throw new NotImplementedException();
+            var productoExistente = await _productoRepository.GetById(idProducto);
+            if (productoExistente is null)
+            {
+                return false;
+            }
+            await _productoRepository.Delete(idProducto);
+            return true;
         }
 
-        public List<ProductoDto> findByCategoria(int idCategoria)
+        public async Task<IEnumerable<ProductoDto>> findAll()
         {
-            throw new NotImplementedException();
+            var productos = await _productoRepository.GetAll();
+            return _mapper.Map<IEnumerable<ProductoDto>>(productos);
         }
 
-        public ProductoDto findById(int id)
+        public async Task<IEnumerable<ProductoDto>> findAllActivos()
         {
-            throw new NotImplementedException();
+            var productos = await _productoRepository.GetAllActivos();
+            return _mapper.Map<IEnumerable<ProductoDto>>(productos);
         }
 
-        public bool update(ProductoUpdateDto producto)
+        public async Task<IEnumerable<ProductoDto>> findByCategoria(int idCategoria)
         {
-            throw new NotImplementedException();
+            var categoria = await _categoriaRepository.GetById(idCategoria);
+
+            if (categoria is null)
+            {
+                throw new Exception("No se encontraron resultados para la categoria especificada");
+            }
+            var productos = await _productoRepository.GetAllActivos();
+
+            var filtrados = productos.Where(p => p.Categorias.Any(c => c.Id == idCategoria));
+            return _mapper.Map<IEnumerable<ProductoDto>>(filtrados);
         }
-    }
+
+        public async Task<ProductoDto> findById(int id)
+        {
+            var producto = await _productoRepository.GetById(id);
+            return _mapper.Map<ProductoDto>(producto);
+        }
+
+        public async Task<ProductoDto> update(int idProducto, ProductoUpdateDto producto)
+        {
+            var productoExistente = await _productoRepository.GetById(idProducto);
+            if (productoExistente is null)
+            {
+                throw new Exception("No se encontró el producto especificado");
+            }
+            _mapper.Map(producto, productoExistente);
+            var productoActualizado = await _productoRepository.Update(productoExistente);
+            return _mapper.Map<ProductoDto>(productoActualizado);
+
+        }
+    } 
 }

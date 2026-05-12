@@ -11,5 +11,6 @@ namespace Repository
         Task Create(Categoria entity);
         Task Update(Categoria entity);
         Task Delete(int id);
+        Task<IEnumerable<Categoria>> GetAllByIds(List<int> ids);
     }
 }

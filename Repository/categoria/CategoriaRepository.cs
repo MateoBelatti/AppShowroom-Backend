@@ -34,6 +34,12 @@ namespace Repository
         {
             return await _context.Categorias.ToListAsync();
         }
+        public async Task<IEnumerable<Categoria>> GetAllByIds(List<int> ids)
+        {
+            return await _context.Categorias
+                .Where(c => ids.Contains(c.Id))
+                .ToListAsync();
+        }
 
         public async Task<Categoria?> GetById(int id)
         {

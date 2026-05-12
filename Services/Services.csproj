@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\biblioteca\biblioteca.csproj" />
+    <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
 </Project>

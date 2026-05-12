@@ -11,10 +11,10 @@ namespace Services.Services.producto
         public Task<IEnumerable<ProductoDto>> findAll ();
         public Task<IEnumerable<ProductoDto>> findAllActivos ();
         public Task<ProductoDto> findById (int id);
-        public Task<List<ProductoDto>> findByCategoria (int idCategoria);
-        public Task<bool> create(ProductoCreateDto producto);
-        public Task<bool> update(ProductoUpdateDto producto);
-        public Task delete (int idProducto);
+        public Task<IEnumerable<ProductoDto>> findByCategoria (int idCategoria);
+        public Task<ProductoDto> create(ProductoCreateDto producto);
+        public Task<ProductoDto> update(int idProducto, ProductoUpdateDto producto);
+        public Task<bool> delete (int idProducto);
 
     }
 }
