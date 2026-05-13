@@ -51,7 +51,7 @@ namespace Services.Services.usuarios
             return _mapper.Map<UsuarioDto>(usuario);
         }
 
-        public async Task<UsuarioDto> update(int id, UsuarioUpdateDto data)
+        public async Task<UsuarioDto?> update(int id, UsuarioUpdateDto data)
         {
             var usuarioExistente = await _usuarioRepository.FindById(id);
             if (usuarioExistente is null) 

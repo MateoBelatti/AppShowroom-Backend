@@ -81,9 +81,10 @@ namespace Services.Services.producto
             return _mapper.Map<IEnumerable<ProductoDto>>(filtrados);
         }
 
-        public async Task<ProductoDto> findById(int id)
+        public async Task<ProductoDto?> findById(int id)
         {
             var producto = await _productoRepository.GetById(id);
+            if (producto is null) return null;
             return _mapper.Map<ProductoDto>(producto);
         }
 

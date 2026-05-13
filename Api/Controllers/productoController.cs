@@ -1,92 +1,73 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using biblioteca.dtos.producto;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query;
 using Services.Services.producto;
 
 namespace Api.Controllers
 {
-    public class productoController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class productoController : ControllerBase
 
     {
-        private IProductoService _productoService;
+        private readonly IProductoService _productoService;
 
         public productoController(IProductoService productoService)
         {
             _productoService = productoService;
         }
-        
-        // GET: productoController
-        public ActionResult Index()
+
+        // GET: /api/producto
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            return  View();
+            var productos = await _productoService.findAll();
+            return Ok(productos);
+        }
+        // GET: /api/producto/activos
+        [HttpGet("activos")]
+        public async Task<IActionResult> GetAllActivos()
+        {
+            var productos = await _productoService.findAllActivos();
+            return Ok(productos);
+        }
+        // GET: /api/producto/categoria/5
+        [HttpGet("categoria/{categoriaId}")]
+        public async Task<IActionResult> GetByCategoria(int categoriaId)
+        {
+            var productos = await _productoService.findByCategoria(categoriaId);
+            return Ok(productos);
         }
 
-        // GET: productoController/Details/5
-        public ActionResult Details(int id)
+        // GET: /api/producto/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> FindById(int id)
         {
-            return View();
+            var producto = await _productoService.findById(id);
+            return producto is null ? NotFound() : Ok(producto);
         }
 
-        // GET: productoController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: productoController/Create
+        // POST: api/producto/create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([FromBody] ProductoCreateDto dataDto)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var productoCreado = await _productoService.create(dataDto);
+            return CreatedAtAction(nameof(FindById), new {id = productoCreado.Id}, productoCreado);
         }
-
-        // GET: productoController/Edit/5
-        public ActionResult Edit(int id)
+        // PUT: producto/update/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ProductoUpdateDto dataDto)
         {
-            return View();
+            var productoActualizado = await _productoService.update(id, dataDto);
+            return productoActualizado is null ? NotFound() : Ok(productoActualizado);
         }
-
-        // POST: productoController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: productoController/Delete/5
-        public ActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
-        }
-
-        // POST: productoController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var eliminado = await _productoService.delete(id);
+            return eliminado ? NoContent() : NotFound();
         }
     }
 }

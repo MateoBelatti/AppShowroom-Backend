@@ -1,0 +1,51 @@
+using biblioteca.dtos.detalleCarrito;
+using Microsoft.AspNetCore.Mvc;
+using Services.Services.detalleCarrito;
+using System.Threading.Tasks;
+
+namespace Api.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class detalleCarritoController : ControllerBase
+    {
+        private readonly IDetalleCarritoService _detalleCarritoService;
+
+        public detalleCarritoController(IDetalleCarritoService detalleCarritoService)
+        {
+            _detalleCarritoService = detalleCarritoService;
+        }
+
+        // GET: /api/detalleCarrito/carrito/5
+        [HttpGet("{idCarrito}")]
+        public async Task<IActionResult> FindAllByIdCarrito(int idCarrito)
+        {
+            var detalles = await _detalleCarritoService.findAllByIdCarrito(idCarrito);
+            return Ok(detalles);
+        }
+
+        // POST: /api/detalleCarrito/create
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] DetalleCarritoCreateDto dataDto)
+        {
+            var detalleCreado = await _detalleCarritoService.create(dataDto);
+            return CreatedAtAction(nameof(FindAllByIdCarrito), new {idCarrito = detalleCreado.CarritoId}, detalleCreado);
+        }
+
+        // PUT: /api/detalleCarrito/update/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] DetalleCarritoUpdateDto dataDto)
+        {
+            var detalleActualizado = await _detalleCarritoService.Update(id, dataDto);
+            return detalleActualizado is null ? NotFound() : Ok(detalleActualizado);
+        }
+
+        // DELETE: /api/detalleCarrito/delete/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var eliminado = await _detalleCarritoService.delete(id);
+            return eliminado ? NoContent() : NotFound();
+        }
+    }
+}
