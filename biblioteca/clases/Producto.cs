@@ -7,7 +7,7 @@ using System.Text;
 namespace biblioteca.clases
 {
     [Table("Productos")]
-    public abstract class Producto
+    public class Producto
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
