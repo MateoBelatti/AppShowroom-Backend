@@ -8,8 +8,8 @@ namespace Repository
     {
         Task<IEnumerable<Categoria>> GetAll();
         Task<Categoria?> GetById(int id);
-        Task Create(Categoria entity);
-        Task Update(Categoria entity);
+        Task<Categoria> Create(Categoria entity);
+        Task<Categoria> Update(Categoria entity);
         Task Delete(int id);
         Task<IEnumerable<Categoria>> GetAllByIds(List<int> ids);
     }

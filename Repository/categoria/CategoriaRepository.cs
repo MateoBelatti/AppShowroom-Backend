@@ -17,10 +17,11 @@ namespace Repository
             _context = context;
         }
 
-        public async Task Create(Categoria entity)
+        public async Task<Categoria> Create(Categoria entity)
         {
-            await _context.Categorias.AddAsync(entity);
+            var categoria  = await _context.Categorias.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return categoria.Entity;
         }
 
         public async Task Delete(int id)
@@ -46,10 +47,11 @@ namespace Repository
             return await _context.Categorias.FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task Update(Categoria entity)
+        public async Task<Categoria> Update(Categoria entity)
         {
-            _context.Categorias.Update(entity);
+            var categoria = _context.Categorias.Update(entity);
             await _context.SaveChangesAsync();
+            return categoria.Entity;
         }
     }
 }

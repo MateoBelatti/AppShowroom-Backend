@@ -11,8 +11,8 @@ namespace Repository
         Task<Usuario?> FindById(int id);
         Task<Usuario?> FindByEmail(string email);
         Task<IEnumerable<Usuario>> FindByRol(Rol rol);
-        Task Create(Usuario entity);
-        Task Update(Usuario entity);
+        Task<Usuario> Create(Usuario entity);
+        Task<Usuario> Update(Usuario entity);
         Task Delete(int id);
     }
 }

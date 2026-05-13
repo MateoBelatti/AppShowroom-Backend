@@ -17,10 +17,11 @@ namespace Repository
         {
             _context = context;
         }
-        public async Task Create(Usuario entity)
+        public async Task<Usuario> Create(Usuario entity)
         {
-            await _context.Usuarios.AddAsync(entity);
+            var usuario = await _context.Usuarios.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return usuario.Entity;
         }
 
         public async Task Delete(int id)
@@ -55,10 +56,11 @@ namespace Repository
                 .ToListAsync();
         }
 
-        public async Task Update(Usuario entity)
+        public async Task<Usuario> Update(Usuario entity)
         {
-            _context.Usuarios.Update(entity);
+            var usuario = _context.Usuarios.Update(entity);
             await _context.SaveChangesAsync();
+            return usuario.Entity;
         }
     }
 }

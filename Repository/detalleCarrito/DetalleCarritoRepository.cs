@@ -17,10 +17,11 @@ namespace Repository
             _context = context;
         }
 
-        public async Task Create(DetalleCarrito entity)
+        public async Task<DetalleCarrito> Create(DetalleCarrito entity)
         {
-            await _context.DetallesCarrito.AddAsync(entity);
+            var carrito = await _context.DetallesCarrito.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return carrito.Entity;
         }
 
         public async Task DeleteAllByCarritoId(int carritoId)
@@ -42,9 +43,18 @@ namespace Repository
             return await _context.DetallesCarrito.FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        public async Task Update(DetalleCarrito entity)
+        public async Task<DetalleCarrito> Update(DetalleCarrito entity)
         {
-            _context.DetallesCarrito.Update(entity);
+            var carrito = _context.DetallesCarrito.Update(entity);
+            await _context.SaveChangesAsync();
+            return carrito.Entity;
+        }
+        public async Task Delete(int id)
+        {
+            DetalleCarrito? detalle = await _context.DetallesCarrito.FindAsync(id);
+            if (detalle is null) return;
+
+            await _context.DetallesCarrito.Where(d => d.Id == id).ExecuteDeleteAsync();
             await _context.SaveChangesAsync();
         }
     }

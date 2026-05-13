@@ -17,13 +17,25 @@ namespace Repository
             _context = context;
         }
 
-        public async Task Create(Carrito entity)
+        public async Task<Carrito> Create(Carrito entity)
         {
-            await _context.Carritos.AddAsync(entity);
+            var result = await _context.Carritos.AddAsync(entity);
             await _context.SaveChangesAsync();
+            return result.Entity;
+        }
+        public async Task<Carrito?> GetByUsuarioId(int usuarioId)
+        {
+            return await _context.Carritos.FirstOrDefaultAsync(c => c.UsuarioID == usuarioId);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<Carrito> Update(Carrito entity)
+        {
+            var result = _context.Carritos.Update(entity);
+            await _context.SaveChangesAsync();
+            return result.Entity;
+        }
+
+        public async Task Delete(int id)
         {
             await _context.Carritos
                 .Where(c => c.Id == id)
