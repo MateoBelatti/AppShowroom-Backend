@@ -10,8 +10,8 @@ namespace Services.Services.carrito
     {
         public Task<CarritoDto> findByIdUsuario(int idUsuario);
         public Task<CarritoDto> findById(int id);
-        public Task<bool> create(CarritoCreateDto carrito);
-        public Task<bool> update(int id, CarritoUpdateDto carrito);
-        public Task delete(int idCarrito);
+        public Task<CarritoDto> create(CarritoCreateDto carrito);
+        public Task<CarritoDto> update(int id, CarritoUpdateDto carrito);
+        public Task<bool> delete(int idCarrito);
     }
 }
