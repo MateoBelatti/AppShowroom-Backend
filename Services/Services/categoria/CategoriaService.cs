@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Api.Errors;
 using AutoMapper;
 using biblioteca.clases;
 using biblioteca.dtos.categoria;
@@ -55,7 +56,7 @@ namespace Services.Services.categoria
             var result = await _categoriaRepository.GetById(idCat);
             if (result is null)
             {
-                throw new Exception("No se encontro categoria para updatear");
+                throw new AppException("No se encontro categoria para updatear", 404, "CategoriaService.update");
             }
             _mapper.Map(data, result);
             var categoria = await _categoriaRepository.Update(result);

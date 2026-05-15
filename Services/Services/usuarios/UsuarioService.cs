@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using Api.Errors;
+using AutoMapper;
 using biblioteca.clases;
 using biblioteca.dtos.usuario;
+using biblioteca.types;
 using Repository;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,14 @@ namespace Services.Services.usuarios
         }
         public async Task<UsuarioDto> create(UsuarioCreateDto usuario)
         {
+            var userVerificar = await _usuarioRepository.FindByEmail(usuario.Email);
+            if (userVerificar != null)
+            {
+                throw new AppException("El correo electrónico ya está en uso", 400, "UsuarioService.create");
+            }
             var newUsuario = _mapper.Map<Usuario>(usuario);
+            newUsuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuario.Password); // hash de la contraseña
+            newUsuario.Rol = Rol.User; // Por defecto, el rol es Usuario
             var usuarioCreado = await _usuarioRepository.Create(newUsuario);
             return _mapper.Map<UsuarioDto>(usuarioCreado);
         }
@@ -56,7 +65,7 @@ namespace Services.Services.usuarios
             var usuarioExistente = await _usuarioRepository.FindById(id);
             if (usuarioExistente is null) 
             {
-                throw new Exception("Usuario no encontrado");
+                throw new AppException("Usuario no encontrado", 404, "UsuarioService.update");
             }
             _mapper.Map(data, usuarioExistente);
             var usuarioActualizado = await _usuarioRepository.Update(usuarioExistente);

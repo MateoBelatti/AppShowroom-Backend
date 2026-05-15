@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Api.Errors;
+using AutoMapper;
 using biblioteca.clases;
 using biblioteca.dtos.detalleCarrito;
 using Repository;
@@ -52,7 +53,7 @@ namespace Services.Services.detalleCarrito
             var detalleExistente = await _detalleCarritoRepository.GetById(idDetalleCarrito);
             if (detalleExistente is null)
             {
-                throw new Exception("No se encontro un DetalleCarrito para actualizar");
+                throw new AppException("No se encontro un DetalleCarrito para actualizar", 404, "DetalleCarritoService.Update");
             }
             _mapper.Map(detalleCarrito, detalleExistente);
             var detalleActualizado = await _detalleCarritoRepository.Update(detalleExistente);

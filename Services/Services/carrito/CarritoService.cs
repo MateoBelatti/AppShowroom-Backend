@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Repository;
 using AutoMapper;
 using Services.Services.detalleCarrito;
+using Api.Errors;
 
 namespace Services.Services.carrito
 {
@@ -35,7 +36,7 @@ namespace Services.Services.carrito
             var usuario = await _usuarioRepository.FindById(carrito.UsuarioId);
             if (usuario == null)
             {
-                throw new Exception("El usuario especificado no existe.");
+                throw new AppException("El usuario especificado no existe.", 404, "CarritoService.create");
             }
 
             var nuevoCarrito = _mapper.Map<Carrito>(carrito);
@@ -89,7 +90,7 @@ namespace Services.Services.carrito
             var carritoExistente = await _carritoRepository.GetById(id);
             if (carritoExistente == null)
             {
-                throw new Exception("No se encontró el carrito especificado.");
+                throw new AppException("No se encontró el carrito especificado.", 404, "CarritoService.update");
             }
 
             carritoExistente.UltimaVez = DateTime.Now;

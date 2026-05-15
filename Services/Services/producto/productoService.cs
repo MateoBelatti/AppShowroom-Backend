@@ -8,6 +8,7 @@ using Repository;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Reflection.Metadata.Ecma335;
+using Api.Errors;
 
 namespace Services.Services.producto
 {
@@ -36,7 +37,7 @@ namespace Services.Services.producto
                 var categorias = await _categoriaRepository.GetAllByIds(producto.CategoriasIds);
                 if (categorias.Count() != producto.CategoriasIds.Count())
                 {
-                    throw new Exception("Una o mas categorias no existen");
+                    throw new AppException("Una o mas categorias no existen", 400, "ProductoService.create");
                 }
                 nuevoProducto.Categorias = categorias.ToList();
             }
@@ -73,7 +74,7 @@ namespace Services.Services.producto
 
             if (categoria is null)
             {
-                throw new Exception("No se encontraron resultados para la categoria especificada");
+                throw new AppException("No se encontraron resultados para la categoria especificada", 404, "ProductoService.findByCategoria");
             }
             var productos = await _productoRepository.GetAllActivos();
 
@@ -93,7 +94,7 @@ namespace Services.Services.producto
             var productoExistente = await _productoRepository.GetById(idProducto);
             if (productoExistente is null)
             {
-                throw new Exception("No se encontró el producto especificado");
+                throw new AppException("No se encontró el producto especificado", 404, "ProductoService.update");
             }
             _mapper.Map(producto, productoExistente);
             var productoActualizado = await _productoRepository.Update(productoExistente);
