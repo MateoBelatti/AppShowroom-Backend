@@ -1,13 +1,18 @@
+using Api.Middlewares;
 using biblioteca;
 using biblioteca.mappers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
+using Services.Services.auth;
 using Services.Services.carrito;
 using Services.Services.categoria;
 using Services.Services.detalleCarrito;
 using Services.Services.producto;
 using Services.Services.usuarios;
 using Services.Services.vela;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +28,9 @@ builder.Services.AddScoped<IDetalleCarritoService, DetalleCarritoService>();
 builder.Services.AddScoped<ICarritoService, CarritoService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 builder.Services.AddScoped<IVelaService, VelaService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthGoogleService, AuthGoogleService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 // Inyeccion de Interfaces y Repositorios
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
@@ -47,6 +55,35 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddDbContext<CanelaContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("canelaConnection")));
 
+// JWT Authentication
+
+builder.Services
+  .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(options => {
+      options.TokenValidationParameters = new TokenValidationParameters
+      {
+          ValidateIssuer = true,
+          ValidateAudience = true,
+          ValidateLifetime = true,
+          ValidateIssuerSigningKey = true,
+          ValidIssuer = builder.Configuration["Jwt:Issuer"],
+          ValidAudience = builder.Configuration["Jwt:Audience"],
+          IssuerSigningKey = new SymmetricSecurityKey(
+          Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]!)
+        )
+      };
+  });
+
+builder.Services.AddAuthorization();
+
+// CORS — permitir el frontend
+builder.Services.AddCors(options => {
+    options.AddPolicy("Frontend", policy =>
+      policy.WithOrigins("http://localhost:5173")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
@@ -68,9 +105,16 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+
 app.UseHttpsRedirection();
 
+app.UseCors("Frontend");
+
+app.UseAuthentication();
+
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.MapControllers();
 
