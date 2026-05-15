@@ -10,7 +10,10 @@ namespace biblioteca.mappers
         public UsuarioProfile()
         {
             CreateMap<clases.Usuario, dtos.usuario.UsuarioDto>();
-            CreateMap<dtos.usuario.UsuarioCreateDto, clases.Usuario>();
+            // mappeo de usuarioDto a Usuario, ignorando el password hash y el rol (se manejan del service)
+            CreateMap<dtos.usuario.UsuarioCreateDto, clases.Usuario>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.Rol, opt => opt.Ignore());
             CreateMap<dtos.usuario.UsuarioUpdateDto, clases.Usuario>();
         }
     }

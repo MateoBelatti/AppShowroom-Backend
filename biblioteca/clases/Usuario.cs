@@ -16,7 +16,7 @@ namespace biblioteca.clases
         public int Id { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string PasswordHash { get; set; } = string.Empty;
+        public string? PasswordHash { get; set; } // nullable para usuarios de google
         public types.Rol Rol { get; set; } = types.Rol.User;
         public string? Direccion { get; set; }
         public string? Telefono { get; set; }
