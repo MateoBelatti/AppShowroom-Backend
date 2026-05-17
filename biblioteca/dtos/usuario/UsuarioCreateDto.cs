@@ -13,8 +13,6 @@ namespace biblioteca.dtos.usuario
 
         public string Password { get; set; } = string.Empty;
 
-        public Rol Rol { get; set; } = Rol.User;
-
         public string? Direccion { get; set; }
 
         public string? Telefono { get; set; }
