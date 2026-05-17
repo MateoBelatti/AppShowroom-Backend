@@ -86,6 +86,7 @@ builder.Services.AddCors(options => {
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -103,6 +104,8 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger(); // 👈 AGREGA ESTA LÍNEA
+    app.UseSwaggerUI(); // 👈 AGREGA ESTA LÍNEA (Esta es la interfaz gráfica)
 }
 
 
