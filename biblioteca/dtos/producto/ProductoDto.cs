@@ -1,4 +1,6 @@
-﻿using biblioteca.types;
+﻿using biblioteca.clases;
+using biblioteca.dtos.categoria;
+using biblioteca.types;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,6 +25,6 @@ namespace biblioteca.dtos.producto
 
         public typeProducto Tipo { get; set; }
 
-        public List<int> CategoriasIds { get; set; } = new();
+        public List<CategoriaDto> Categorias { get; set; } = new();
     }
 }

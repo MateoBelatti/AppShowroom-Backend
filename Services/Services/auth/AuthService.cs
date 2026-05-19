@@ -24,7 +24,7 @@ namespace Services.Services.auth
             var userVerificar = await _usuarioRepository.FindByEmail(loginDto.Email);
             if (userVerificar is null)
             {
-                throw new AppException("Usuario no encontrado", 404, "AuthService.Login");
+                throw new AppException("Contraseña usuario o contraseña incorrecta", 404, "AuthService.Login");
             }
             if (userVerificar.PasswordHash is null)
             {

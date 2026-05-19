@@ -43,11 +43,11 @@ builder.Services.AddScoped<IVelaRepository, VelaRepository>();
 // Inyeccion de Mappers
 builder.Services.AddAutoMapper(cfg =>
 {
+    cfg.AddProfile<CategoriaProfile>();
     cfg.AddProfile<ProductoProfile>();
     cfg.AddProfile<UsuarioProfile>();
     cfg.AddProfile<DetalleCarritoProfile>();
     cfg.AddProfile<CarritoProfile>();
-    cfg.AddProfile<CategoriaProfile>();
     cfg.AddProfile<VelaProfile>();
 });
 
