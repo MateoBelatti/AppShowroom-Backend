@@ -19,7 +19,7 @@ namespace biblioteca.clases
         public int Stock { get; set; } = 0;
         public bool Activo { get; set; } = true;
         public types.typeProducto Tipo { get; set; } = types.typeProducto.Vela;
-        // EF crea tabla intermedia para relacion muchos a muchos entre Vela y Categoria
+        // EF crea tabla intermedia para relacion muchos a muchos entre Producto y Categoria
         public virtual ICollection<Categoria> Categorias { get; set; } = new HashSet<Categoria>();
 
         public Producto() { }
