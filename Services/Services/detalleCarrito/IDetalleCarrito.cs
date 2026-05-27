@@ -11,7 +11,7 @@ namespace Services.Services.detalleCarrito
     {
         public Task<DetalleCarritoDto> create(DetalleCarritoCreateDto detalleCarrito);
         public Task<IEnumerable<DetalleCarritoDto>> findAllByIdCarrito(int idCarrito);
-        public Task<DetalleCarritoDto> Update(int idDetalleCarrito, DetalleCarritoUpdateDto detalleCarrito);
+        public Task<DetalleCarritoDto> Update(DetalleCarritoUpdateDto detalleCarrito);
         public Task<bool> delete(int idDetalleCarrito);
 
     }

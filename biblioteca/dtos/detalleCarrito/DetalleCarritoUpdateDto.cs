@@ -6,7 +6,7 @@ namespace biblioteca.dtos.detalleCarrito
 {
     public class DetalleCarritoUpdateDto
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public int Cantidad { get; set; }
     }
 }

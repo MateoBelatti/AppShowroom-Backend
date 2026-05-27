@@ -32,11 +32,11 @@ namespace Api.Controllers
             return CreatedAtAction(nameof(FindAllByIdCarrito), new {idCarrito = detalleCreado.CarritoId}, detalleCreado);
         }
 
-        // PUT: /api/detalleCarrito/update/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] DetalleCarritoUpdateDto dataDto)
+        // PUT: /api/detalleCarrito/update
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] DetalleCarritoUpdateDto dataDto)
         {
-            var detalleActualizado = await _detalleCarritoService.Update(id, dataDto);
+            var detalleActualizado = await _detalleCarritoService.Update(dataDto);
             return detalleActualizado is null ? NotFound() : Ok(detalleActualizado);
         }
 
