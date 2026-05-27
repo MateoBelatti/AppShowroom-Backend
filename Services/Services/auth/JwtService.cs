@@ -24,10 +24,9 @@ namespace Services.Services.auth
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Name, name),
-                new Claim(ClaimTypes.Role, rol.ToString())
+                new Claim("nombre", name),
+                new Claim("id", userId.ToString()),
+                new Claim("rol", rol.ToString())
             };
 
             var token = new JwtSecurityToken(
