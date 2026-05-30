@@ -56,10 +56,10 @@ namespace Api.Controllers
             return CreatedAtAction(nameof(FindById), new {id = productoCreado.Id}, productoCreado);
         }
         // PUT: producto/update/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ProductoUpdateDto dataDto)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] ProductoUpdateDto dataDto)
         {
-            var productoActualizado = await _productoService.update(id, dataDto);
+            var productoActualizado = await _productoService.update(dataDto.Id, dataDto);
             return productoActualizado is null ? NotFound() : Ok(productoActualizado);
         }
         // GET: productoController/Delete/5
