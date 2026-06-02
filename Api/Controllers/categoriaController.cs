@@ -41,11 +41,11 @@ namespace Api.Controllers
             return CreatedAtAction(nameof(FindById), new { id = categoriaCreada.Id }, categoriaCreada);
         }
 
-        // PUT: /api/categoria/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] CategoriaUpdateDto dataDto)
+        // PUT: /api/categoria
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] CategoriaUpdateDto dataDto)
         {
-            var categoriaActualizada = await _categoriaService.update(id, dataDto);
+            var categoriaActualizada = await _categoriaService.update(dataDto.Id, dataDto);
             return categoriaActualizada is null ? NotFound() : Ok(categoriaActualizada);
         }
 
