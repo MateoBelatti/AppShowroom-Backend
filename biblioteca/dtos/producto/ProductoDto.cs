@@ -3,12 +3,14 @@ using biblioteca.dtos.categoria;
 using biblioteca.types;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace biblioteca.dtos.producto
 {
     public class ProductoDto
     {
+        [Required]
         public int Id { get; set; }
 
         public string Nombre { get; set; } = string.Empty;
