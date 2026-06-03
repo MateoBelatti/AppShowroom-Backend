@@ -33,9 +33,7 @@ namespace Services.Services.detalleCarrito
         {
             if (!(await ValidarCarritoExistente(detalleCarrito.CarritoID)))
             {
-                Console.WriteLine("El carrito no existe");
-              var carrito = await _carritoService.create(new CarritoCreateDto { UsuarioId = detalleCarrito.UsuarioId });
-                detalleCarrito.CarritoID = carrito.Id;
+                throw new AppException("El carrito no existe", 400, "DetalleCarrito.create");
             }
             var detalleCrear = _mapper.Map<DetalleCarrito>(detalleCarrito);
             var detalleCreado = await _detalleCarritoRepository.Create(detalleCrear);
@@ -61,7 +59,6 @@ namespace Services.Services.detalleCarrito
 
         public async Task<DetalleCarritoDto> Update(DetalleCarritoUpdateDto detalleCarrito)
         {
-            Console.WriteLine("Estamos en update del detalle");
             var detalleExistente = await _detalleCarritoRepository.GetById(detalleCarrito.Id);
             if (detalleExistente is null)
             {

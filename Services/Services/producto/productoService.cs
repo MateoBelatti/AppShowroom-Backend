@@ -85,16 +85,6 @@ namespace Services.Services.producto
         public async Task<ProductoDto?> findById(int id)
         {
             var producto = await _productoRepository.GetById(id);
-            if (producto is null) return null; 
-            if (producto.Categorias != null && producto.Categorias.Any())
-            {
-                var nombresCategorias = string.Join(", ", producto.Categorias.Select(c => c.Nombre));
-                Console.WriteLine($"Este es el producto (Categorías): {nombresCategorias} ");
-            }
-            else
-            {
-                Console.WriteLine("Este es el producto: No tiene categorías asociadas.");
-            }
             if (producto is null) return null;
             return _mapper.Map<ProductoDto>(producto);
         }

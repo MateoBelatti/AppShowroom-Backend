@@ -26,7 +26,7 @@ namespace Services.Services.auth
             {
                 new Claim("nombre", name),
                 new Claim("id", userId.ToString()),
-                new Claim("rol", rol.ToString())
+                new Claim(ClaimTypes.Role, rol.ToString())
             };
 
             var token = new JwtSecurityToken(
