@@ -1,4 +1,5 @@
 using biblioteca.dtos.categoria;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.categoria;
 using System.Threading.Tasks;
@@ -33,6 +34,7 @@ namespace Api.Controllers
         }
 
         // POST: /api/categoria
+        [Authorize(Roles = "Admin")] 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoriaCreateDto dataDto)
         {
@@ -42,6 +44,7 @@ namespace Api.Controllers
         }
 
         // PUT: /api/categoria
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoriaUpdateDto dataDto)
         {
@@ -49,7 +52,8 @@ namespace Api.Controllers
             return categoriaActualizada is null ? NotFound() : Ok(categoriaActualizada);
         }
 
-        // DELETE: /api/categoria/5
+        // DELETE: /api/categoria/54
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

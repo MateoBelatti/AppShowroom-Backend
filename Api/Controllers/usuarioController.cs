@@ -40,7 +40,7 @@ namespace Api.Controllers
         {
 
             var usuarioActualizado = await _usuarioService.update(id, dataDto);
-            return Ok(usuarioActualizado);
+            return usuarioActualizado is null ? NotFound() : Ok(usuarioActualizado);
         }
         // DELETE: /api/usuario/5
         [HttpDelete("{id}")]

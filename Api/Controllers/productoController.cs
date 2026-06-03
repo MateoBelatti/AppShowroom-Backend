@@ -1,4 +1,5 @@
 ﻿using biblioteca.dtos.producto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query;
@@ -49,6 +50,7 @@ namespace Api.Controllers
         }
 
         // POST: api/producto/create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] ProductoCreateDto dataDto)
         {
@@ -56,6 +58,7 @@ namespace Api.Controllers
             return CreatedAtAction(nameof(FindById), new {id = productoCreado.Id}, productoCreado);
         }
         // PUT: producto/update/5
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] ProductoUpdateDto dataDto)
         {
@@ -63,6 +66,7 @@ namespace Api.Controllers
             return productoActualizado is null ? NotFound() : Ok(productoActualizado);
         }
         // GET: productoController/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
