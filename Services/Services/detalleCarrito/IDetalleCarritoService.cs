@@ -9,10 +9,10 @@ namespace Services.Services.detalleCarrito
 {
     public interface IDetalleCarritoService
     {
-        public Task<DetalleCarritoDto> create(DetalleCarritoCreateDto detalleCarrito);
-        public Task<IEnumerable<DetalleCarritoDto>> findAllByIdCarrito(int idCarrito);
+        public Task<DetalleCarritoDto> Create(DetalleCarritoCreateDto detalleCarrito);
+        public Task<IEnumerable<DetalleCarritoDto>> GetByCarritoId(int idCarrito);
         public Task<DetalleCarritoDto> Update(DetalleCarritoUpdateDto detalleCarrito);
-        public Task<bool> delete(int idDetalleCarrito);
+        public Task<bool> Delete(int idDetalleCarrito);
 
     }
 }

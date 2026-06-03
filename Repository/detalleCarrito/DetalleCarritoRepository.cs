@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using biblioteca;
@@ -31,7 +31,7 @@ namespace Repository
                 .ExecuteDeleteAsync();
         }
 
-        public async Task<DetalleCarrito[]> FindByCarritoID(int carritoId)
+        public async Task<DetalleCarrito[]> GetByCarritoId(int carritoId)
         {
             return await _context.DetallesCarrito
                 .Where(d => d.CarritoID == carritoId)

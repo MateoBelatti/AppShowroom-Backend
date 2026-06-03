@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using biblioteca.clases;
@@ -9,10 +9,10 @@ namespace Services.Services.usuarios
 {
     public interface IUsuarioService
     {
-        public Task<IEnumerable<UsuarioDto>> findAll();
-        public Task<UsuarioDto?> findById(int id);
-        public Task<UsuarioDto> create(UsuarioCreateDto usuario);
-        public Task<UsuarioDto?> update(int id,UsuarioUpdateDto data);
-        public Task<bool> delete(int idUsuario);
+        public Task<IEnumerable<UsuarioDto>> GetAll();
+        public Task<UsuarioDto?> GetById(int id);
+        public Task<UsuarioDto> Create(UsuarioCreateDto usuario);
+        public Task<UsuarioDto?> Update(int id,UsuarioUpdateDto data);
+        public Task<bool> Delete(int idUsuario);
     }
 }

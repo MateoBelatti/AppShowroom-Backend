@@ -1,4 +1,4 @@
-using biblioteca.dtos.carrito;
+﻿using biblioteca.dtos.carrito;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.carrito;
@@ -19,45 +19,45 @@ namespace Api.Controllers
 
         // GET: /api/carrito/usuario/5
         [HttpGet("usuario/{idUsuario}")]
-        public async Task<IActionResult> FindByIdUsuario(int idUsuario)
+        public async Task<IActionResult> GetByUsuarioId(int idUsuario)
         {
-            var carrito = await _carritoService.findByIdUsuario(idUsuario);
+            var carrito = await _carritoService.GetByUsuarioId(idUsuario);
             return carrito is null ? NotFound() : Ok(carrito);
         }
 
         // GET: /api/carrito/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> FindById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var carrito = await _carritoService.findById(id);
+            var carrito = await _carritoService.GetById(id);
             return carrito is null ? NotFound() : Ok(carrito);
         }
 
-        // POST: /api/carrito/create
+        // POST: /api/carrito/Create
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CarritoCreateDto dataDto)
         {
-            var carritoCreado = await _carritoService.create(dataDto);
+            var carritoCreado = await _carritoService.Create(dataDto);
             // Assuming CarritoDto has an Id property.
-            return CreatedAtAction(nameof(FindById), new { id = carritoCreado.Id }, carritoCreado);
+            return CreatedAtAction(nameof(GetById), new { id = carritoCreado.Id }, carritoCreado);
         }
 
-        // PUT: /api/carrito/update/5
+        // PUT: /api/carrito/Update/5
         [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CarritoUpdateDto dataDto)
         {
-            var carritoActualizado = await _carritoService.update(id, dataDto);
+            var carritoActualizado = await _carritoService.Update(id, dataDto);
             return carritoActualizado is null ? NotFound() : Ok(carritoActualizado);
         }
 
-        // DELETE: /api/carrito/delete/5
+        // DELETE: /api/carrito/Delete/5
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var eliminado = await _carritoService.delete(id);
+            var eliminado = await _carritoService.Delete(id);
             return eliminado ? NoContent() : NotFound();
         }
     }

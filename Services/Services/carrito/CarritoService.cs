@@ -1,4 +1,4 @@
-using biblioteca.clases;
+﻿using biblioteca.clases;
 using biblioteca.dtos.carrito;
 using biblioteca.dtos.detalleCarrito;
 using System;
@@ -31,12 +31,12 @@ namespace Services.Services.carrito
             _mapper = mapper;
         }   
 
-        public async Task<CarritoDto> create(CarritoCreateDto carrito)
+        public async Task<CarritoDto> Create(CarritoCreateDto carrito)
         {
-            var usuario = await _usuarioRepository.FindById(carrito.UsuarioId);
+            var usuario = await _usuarioRepository.GetById(carrito.UsuarioId);
             if (usuario == null)
             {
-                throw new AppException("El usuario especificado no existe.", 404, "CarritoService.create");
+                throw new AppException("El usuario especificado no existe.", 404, "CarritoService.Create");
             }
 
             var nuevoCarrito = _mapper.Map<Carrito>(carrito);
@@ -45,7 +45,7 @@ namespace Services.Services.carrito
             return _mapper.Map<CarritoDto>(carritoCreado);
         }
 
-        public async Task<bool> delete(int idCarrito)
+        public async Task<bool> Delete(int idCarrito)
         {
             var carritoExistente = await _carritoRepository.GetById(idCarrito);
             if (carritoExistente == null)
@@ -58,13 +58,13 @@ namespace Services.Services.carrito
             return true;
         }
 
-        public async Task<CarritoDto> findById(int id)
+        public async Task<CarritoDto> GetById(int id)
         {
             var carrito = await _carritoRepository.GetById(id);
             if (carrito == null) return null;
 
             var carritoDto = _mapper.Map<CarritoDto>(carrito);
-            var detalles = await _detalleCarritoRepository.FindByCarritoID(id);
+            var detalles = await _detalleCarritoRepository.GetByCarritoId(id);
             if (detalles != null && detalles.Any())
             {
                 carritoDto.Detalles = _mapper.Map<List<DetalleCarritoDto>>(detalles);
@@ -73,11 +73,11 @@ namespace Services.Services.carrito
             return carritoDto;
         }
 
-        public async Task<CarritoDto> findByIdUsuario(int idUsuario)
+        public async Task<CarritoDto> GetByUsuarioId(int idUsuario)
         {
             var carrito = await _carritoRepository.GetByUsuarioId(idUsuario);
             if (carrito == null) return null;
-            var detalles = await _detalleCarritoRepository.FindByCarritoID(carrito.Id);
+            var detalles = await _detalleCarritoRepository.GetByCarritoId(carrito.Id);
             if (detalles != null && detalles.Any())
             {
                 carrito.Detalles = detalles.ToList();
@@ -85,12 +85,12 @@ namespace Services.Services.carrito
             return _mapper.Map<CarritoDto>(carrito);
         }
 
-        public async Task<CarritoDto> update(int id, CarritoUpdateDto carritoDto)
+        public async Task<CarritoDto> Update(int id, CarritoUpdateDto carritoDto)
         {
             var carritoExistente = await _carritoRepository.GetById(id);
             if (carritoExistente == null)
             {
-                throw new AppException("No se encontró el carrito especificado.", 404, "CarritoService.update");
+                throw new AppException("No se encontrÃ³ el carrito especificado.", 404, "CarritoService.Update");
             }
 
             carritoExistente.UltimaVez = DateTime.Now;

@@ -43,7 +43,7 @@ namespace Services.Services.auth
                 });
             }
 
-            return _jwtService.generateJwt(usuario.Id, usuario.Email, usuario.Nombre, usuario.Rol);
+            return _jwtService.GenerateJwt(usuario.Id, usuario.Email, usuario.Nombre, usuario.Rol);
         }
     }
 }

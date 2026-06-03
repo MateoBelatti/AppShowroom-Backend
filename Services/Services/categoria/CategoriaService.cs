@@ -21,14 +21,14 @@ namespace Services.Services.categoria
             _categoriaRepository = categoriaRepository;
             _mapper = mapper;
         }
-        public async Task<CategoriaDto> create(CategoriaCreateDto data)
+        public async Task<CategoriaDto> Create(CategoriaCreateDto data)
         {
             var producto = _mapper.Map<Categoria>(data);
             var result = await _categoriaRepository.Create(producto);
             return _mapper.Map<CategoriaDto>(result);
         }
 
-        public async Task<bool> delete(int idCategoria)
+        public async Task<bool> Delete(int idCategoria)
         {
             var result = await _categoriaRepository.GetById(idCategoria);
             if (result is null)
@@ -39,24 +39,24 @@ namespace Services.Services.categoria
             return true;
         }
 
-        public async Task<IEnumerable<CategoriaDto>> findAll()
+        public async Task<IEnumerable<CategoriaDto>> GetAll()
         {
             var categorias = await _categoriaRepository.GetAll();
             return _mapper.Map<IEnumerable<CategoriaDto>>(categorias);
         }
 
-        public async Task<CategoriaDto> findById(int id)
+        public async Task<CategoriaDto> GetById(int id)
         {
             var result = await _categoriaRepository.GetById(id);
             return _mapper.Map<CategoriaDto>(result);
         }
 
-        public async Task<CategoriaDto> update(int idCat, CategoriaUpdateDto data)
+        public async Task<CategoriaDto> Update(int id, CategoriaUpdateDto data)
         {
-            var result = await _categoriaRepository.GetById(idCat);
+            var result = await _categoriaRepository.GetById(id);
             if (result is null)
             {
-                throw new AppException("No se encontro categoria para updatear", 404, "CategoriaService.update");
+                throw new AppException("No se encontro categoria para updatear", 404, "CategoriaService.Update");
             }
             _mapper.Map(data, result);
             var categoria = await _categoriaRepository.Update(result);

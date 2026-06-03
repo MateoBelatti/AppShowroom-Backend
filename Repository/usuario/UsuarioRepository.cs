@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using biblioteca;
@@ -37,7 +37,7 @@ namespace Repository
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 
-        public Task<Usuario?> FindById(int id)
+        public Task<Usuario?> GetById(int id)
         {
             return _context.Usuarios
                 .FirstOrDefaultAsync(u => u.Id == id);

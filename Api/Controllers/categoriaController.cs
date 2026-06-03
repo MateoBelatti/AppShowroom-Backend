@@ -1,4 +1,4 @@
-using biblioteca.dtos.categoria;
+﻿using biblioteca.dtos.categoria;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.categoria;
@@ -21,15 +21,15 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var categorias = await _categoriaService.findAll();
+            var categorias = await _categoriaService.GetAll();
             return Ok(categorias);
         }
 
         // GET: /api/categoria/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> FindById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var categoria = await _categoriaService.findById(id);
+            var categoria = await _categoriaService.GetById(id);
             return categoria is null ? NotFound() : Ok(categoria);
         }
 
@@ -38,9 +38,9 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoriaCreateDto dataDto)
         {
-            var categoriaCreada = await _categoriaService.create(dataDto);
+            var categoriaCreada = await _categoriaService.Create(dataDto);
             // Assuming CategoriaDto has an Id property.
-            return CreatedAtAction(nameof(FindById), new { id = categoriaCreada.Id }, categoriaCreada);
+            return CreatedAtAction(nameof(GetById), new { id = categoriaCreada.Id }, categoriaCreada);
         }
 
         // PUT: /api/categoria
@@ -48,7 +48,7 @@ namespace Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] CategoriaUpdateDto dataDto)
         {
-            var categoriaActualizada = await _categoriaService.update(dataDto.Id, dataDto);
+            var categoriaActualizada = await _categoriaService.Update(dataDto.Id, dataDto);
             return categoriaActualizada is null ? NotFound() : Ok(categoriaActualizada);
         }
 
@@ -57,7 +57,7 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var eliminado = await _categoriaService.delete(id);
+            var eliminado = await _categoriaService.Delete(id);
             return eliminado ? NoContent() : NotFound();
         }
     }

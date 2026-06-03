@@ -1,4 +1,4 @@
-using biblioteca.dtos.detalleCarrito;
+﻿using biblioteca.dtos.detalleCarrito;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.detalleCarrito;
@@ -19,19 +19,19 @@ namespace Api.Controllers
 
         // GET: /api/detalleCarrito/carrito/5
         [HttpGet("{idCarrito}")]
-        public async Task<IActionResult> FindAllByIdCarrito(int idCarrito)
+        public async Task<IActionResult> GetByCarritoId(int idCarrito)
         {
-            var detalles = await _detalleCarritoService.findAllByIdCarrito(idCarrito);
+            var detalles = await _detalleCarritoService.GetByCarritoId(idCarrito);
             return Ok(detalles);
         }
 
-        // POST: /api/detalleCarrito/create
+        // POST: /api/detalleCarrito/Create
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DetalleCarritoCreateDto dataDto)
         {
-            var detalleCreado = await _detalleCarritoService.create(dataDto);
-            return CreatedAtAction(nameof(FindAllByIdCarrito), new {idCarrito = detalleCreado.CarritoId}, detalleCreado);
+            var detalleCreado = await _detalleCarritoService.Create(dataDto);
+            return CreatedAtAction(nameof(GetByCarritoId), new {idCarrito = detalleCreado.CarritoId}, detalleCreado);
         }
 
         // PUT: /api/detalleCarrito/update
@@ -43,12 +43,12 @@ namespace Api.Controllers
             return detalleActualizado is null ? NotFound() : Ok(detalleActualizado);
         }
 
-        // DELETE: /api/detalleCarrito/delete/5
+        // DELETE: /api/detalleCarrito/Delete/5
         [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var eliminado = await _detalleCarritoService.delete(id);
+            var eliminado = await _detalleCarritoService.Delete(id);
             return eliminado ? NoContent() : NotFound();
         }
     }

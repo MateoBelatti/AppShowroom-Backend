@@ -29,7 +29,7 @@ namespace Services.Services.producto
             _mapper = mapper;
         }
 
-        public async Task<ProductoDto> create(ProductoCreateDto producto)
+        public async Task<ProductoDto> Create(ProductoCreateDto producto)
         {
             var nuevoProducto = _mapper.Map<Producto>(producto);
             if (producto.CategoriasIds != null)
@@ -37,7 +37,7 @@ namespace Services.Services.producto
                 var categorias = await _categoriaRepository.GetAllByIds(producto.CategoriasIds);
                 if (categorias.Count() != producto.CategoriasIds.Count())
                 {
-                    throw new AppException("Una o mas categorias no existen", 400, "ProductoService.create");
+                    throw new AppException("Una o mas categorias no existen", 400, "ProductoService.Create");
                 }
                 nuevoProducto.Categorias = categorias.ToList();
             }
@@ -45,7 +45,7 @@ namespace Services.Services.producto
             return _mapper.Map<ProductoDto>(productoCreado);
         }
 
-        public async Task<bool> delete(int idProducto)
+        public async Task<bool> Delete(int idProducto)
         {
             var productoExistente = await _productoRepository.GetById(idProducto);
             if (productoExistente is null)
@@ -56,25 +56,25 @@ namespace Services.Services.producto
             return true;
         }
 
-        public async Task<IEnumerable<ProductoDto>> findAll()
+        public async Task<IEnumerable<ProductoDto>> GetAll()
         {
             var productos = await _productoRepository.GetAll();
             return _mapper.Map<IEnumerable<ProductoDto>>(productos);
         }
 
-        public async Task<IEnumerable<ProductoDto>> findAllActivos()
+        public async Task<IEnumerable<ProductoDto>> GetAllActivos()
         {
             var productos = await _productoRepository.GetAllActivos();
             return _mapper.Map<IEnumerable<ProductoDto>>(productos);
         }
 
-        public async Task<IEnumerable<ProductoDto>> findByCategoria(int idCategoria)
+        public async Task<IEnumerable<ProductoDto>> GetByCategoria(int idCategoria)
         {
             var categoria = await _categoriaRepository.GetById(idCategoria);
 
             if (categoria is null)
             {
-                throw new AppException("No se encontraron resultados para la categoria especificada", 404, "ProductoService.findByCategoria");
+                throw new AppException("No se encontraron resultados para la categoria especificada", 404, "ProductoService.GetByCategoria");
             }
             var productos = await _productoRepository.GetAllActivos();
 
@@ -82,19 +82,19 @@ namespace Services.Services.producto
             return _mapper.Map<IEnumerable<ProductoDto>>(filtrados);
         }
 
-        public async Task<ProductoDto?> findById(int id)
+        public async Task<ProductoDto?> GetById(int id)
         {
             var producto = await _productoRepository.GetById(id);
             if (producto is null) return null;
             return _mapper.Map<ProductoDto>(producto);
         }
 
-        public async Task<ProductoDto> update(int idProducto, ProductoUpdateDto producto)
+        public async Task<ProductoDto> Update(int idProducto, ProductoUpdateDto producto)
         {
             var productoExistente = await _productoRepository.GetById(idProducto);
             if (productoExistente is null)
             {
-                throw new AppException("No se encontró el producto especificado", 404, "ProductoService.update");
+                throw new AppException("No se encontró el producto especificado", 404, "ProductoService.Update");
             }
             _mapper.Map(producto, productoExistente);
             var productoActualizado = await _productoRepository.Update(productoExistente);

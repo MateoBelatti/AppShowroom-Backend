@@ -16,7 +16,7 @@ namespace Services.Services.auth
             _config = config;
         }
 
-        public string generateJwt(int userId, string email, string name, Rol rol)
+        public string GenerateJwt(int userId, string email, string name, Rol rol)
         {
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_config["Jwt:SecretKey"]!)

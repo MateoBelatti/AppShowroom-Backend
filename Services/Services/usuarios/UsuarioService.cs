@@ -22,12 +22,12 @@ namespace Services.Services.usuarios
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
         }
-        public async Task<UsuarioDto> create(UsuarioCreateDto usuario)
+        public async Task<UsuarioDto> Create(UsuarioCreateDto usuario)
         {
             var userVerificar = await _usuarioRepository.FindByEmail(usuario.Email);
             if (userVerificar != null)
             {
-                throw new AppException("El correo electrónico ya está en uso", 400, "UsuarioService.create");
+                throw new AppException("El correo electrónico ya está en uso", 400, "UsuarioService.Create");
             }
             var newUsuario = _mapper.Map<Usuario>(usuario);
             newUsuario.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuario.Password); // hash de la contraseña
@@ -36,9 +36,9 @@ namespace Services.Services.usuarios
             return _mapper.Map<UsuarioDto>(usuarioCreado);
         }
 
-        public async Task<bool> delete(int idUsuario)
+        public async Task<bool> Delete(int idUsuario)
         {
-            var usuarioExistente = await _usuarioRepository.FindById(idUsuario);
+            var usuarioExistente = await _usuarioRepository.GetById(idUsuario);
             if (usuarioExistente is null)
             {
                 return false;   
@@ -47,25 +47,25 @@ namespace Services.Services.usuarios
             return true;
         }
 
-        public async Task<IEnumerable<UsuarioDto>> findAll()
+        public async Task<IEnumerable<UsuarioDto>> GetAll()
         {
             var usuarios = await _usuarioRepository.GetAll();
             return _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
         }
 
-        public async Task<UsuarioDto?> findById(int id)
+        public async Task<UsuarioDto?> GetById(int id)
         {
-            var usuario = await _usuarioRepository.FindById(id);
+            var usuario = await _usuarioRepository.GetById(id);
             if (usuario is null) return null;
             return _mapper.Map<UsuarioDto>(usuario);
         }
 
-        public async Task<UsuarioDto?> update(int id, UsuarioUpdateDto data)
+        public async Task<UsuarioDto?> Update(int id, UsuarioUpdateDto data)
         {
-            var usuarioExistente = await _usuarioRepository.FindById(id);
+            var usuarioExistente = await _usuarioRepository.GetById(id);
             if (usuarioExistente is null) 
             {
-                throw new AppException("Usuario no encontrado", 404, "UsuarioService.update");
+                throw new AppException("Usuario no encontrado", 404, "UsuarioService.Update");
             }
             _mapper.Map(data, usuarioExistente);
             var usuarioActualizado = await _usuarioRepository.Update(usuarioExistente);

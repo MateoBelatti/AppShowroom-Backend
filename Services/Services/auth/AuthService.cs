@@ -35,7 +35,7 @@ namespace Services.Services.auth
             {
                 throw new AppException("Contraseña usuario o contraseña incorrecta", 400, "AuthService.Login");
             }
-            return _jwtService.generateJwt(userVerificar.Id, userVerificar.Email, userVerificar.Nombre, userVerificar.Rol);
+            return _jwtService.GenerateJwt(userVerificar.Id, userVerificar.Email, userVerificar.Nombre, userVerificar.Rol);
         }
     }
 

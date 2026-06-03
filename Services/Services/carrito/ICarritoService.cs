@@ -1,4 +1,4 @@
-using biblioteca.dtos.carrito;
+﻿using biblioteca.dtos.carrito;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,10 +8,10 @@ namespace Services.Services.carrito
 {
     public interface ICarritoService
     {
-        public Task<CarritoDto> findByIdUsuario(int idUsuario);
-        public Task<CarritoDto> findById(int id);
-        public Task<CarritoDto> create(CarritoCreateDto carrito);
-        public Task<CarritoDto> update(int id, CarritoUpdateDto carrito);
-        public Task<bool> delete(int idCarrito);
+        public Task<CarritoDto> GetByUsuarioId(int idUsuario);
+        public Task<CarritoDto> GetById(int id);
+        public Task<CarritoDto> Create(CarritoCreateDto carrito);
+        public Task<CarritoDto> Update(int id, CarritoUpdateDto carrito);
+        public Task<bool> Delete(int idCarrito);
     }
 }

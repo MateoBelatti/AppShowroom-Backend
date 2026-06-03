@@ -29,18 +29,18 @@ namespace Services.Services.detalleCarrito
             _mapper = mapper;
         }
 
-        public async Task<DetalleCarritoDto> create(DetalleCarritoCreateDto detalleCarrito)
+        public async Task<DetalleCarritoDto> Create(DetalleCarritoCreateDto detalleCarrito)
         {
             if (!(await ValidarCarritoExistente(detalleCarrito.CarritoID)))
             {
-                throw new AppException("El carrito no existe", 400, "DetalleCarrito.create");
+                throw new AppException("El carrito no existe", 400, "DetalleCarrito.Create");
             }
             var detalleCrear = _mapper.Map<DetalleCarrito>(detalleCarrito);
             var detalleCreado = await _detalleCarritoRepository.Create(detalleCrear);
             return _mapper.Map<DetalleCarritoDto>(detalleCreado);
         }
 
-        public async Task<bool> delete(int idDetalleCarrito)
+        public async Task<bool> Delete(int idDetalleCarrito)
         {
             var detalleExistente = await _detalleCarritoRepository.GetById(idDetalleCarrito);
             if (detalleExistente is null)
@@ -51,9 +51,9 @@ namespace Services.Services.detalleCarrito
             return true;
         }
 
-        public async Task<IEnumerable<DetalleCarritoDto>> findAllByIdCarrito(int idCarrito)
+        public async Task<IEnumerable<DetalleCarritoDto>> GetByCarritoId(int idCarrito)
         {
-            var detalles = await _detalleCarritoRepository.FindByCarritoID(idCarrito);
+            var detalles = await _detalleCarritoRepository.GetByCarritoId(idCarrito);
             return _mapper.Map<IEnumerable<DetalleCarritoDto>>(detalles);
         }
 
@@ -72,7 +72,7 @@ namespace Services.Services.detalleCarrito
 
         private async Task<bool> ValidarCarritoExistente(int idCarrito)
         {
-            var carrito = await _carritoService.findById(idCarrito);
+            var carrito = await _carritoService.GetById(idCarrito);
             if (carrito is null) return false;
             return true;
         }

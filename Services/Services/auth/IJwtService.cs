@@ -7,6 +7,6 @@ namespace Services.Services.auth
 {
     public interface IJwtService
     {
-        string generateJwt(int userId, string email, string name, Rol rol);
+        string GenerateJwt(int userId, string email, string name, Rol rol);
     }
 }
