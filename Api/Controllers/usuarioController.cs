@@ -1,4 +1,5 @@
 ﻿using biblioteca.dtos.usuario;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.usuarios;
 
@@ -14,6 +15,7 @@ namespace Api.Controllers
             _usuarioService = usuarioService;
         }
         // GET: /api/usuario
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {

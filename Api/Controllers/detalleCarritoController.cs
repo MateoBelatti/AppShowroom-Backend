@@ -1,4 +1,5 @@
 using biblioteca.dtos.detalleCarrito;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.detalleCarrito;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace Api.Controllers
         }
 
         // POST: /api/detalleCarrito/create
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] DetalleCarritoCreateDto dataDto)
         {
@@ -33,6 +35,7 @@ namespace Api.Controllers
         }
 
         // PUT: /api/detalleCarrito/update
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] DetalleCarritoUpdateDto dataDto)
         {
@@ -41,6 +44,7 @@ namespace Api.Controllers
         }
 
         // DELETE: /api/detalleCarrito/delete/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

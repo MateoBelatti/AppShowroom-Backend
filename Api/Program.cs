@@ -90,19 +90,18 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<CanelaContext>();
-
-    // Aplica las migraciones pendientes al iniciar la aplicación
-    // uso mientras esta en desarrollo
-    context.Database.Migrate();
-}
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<CanelaContext>();
+
+        // Aplica las migraciones pendientes al iniciar la aplicación
+        // uso mientras esta en desarrollo
+        context.Database.Migrate();
+    }
     app.MapOpenApi();
     app.UseSwagger(); // 👈 AGREGA ESTA LÍNEA
     app.UseSwaggerUI(); // 👈 AGREGA ESTA LÍNEA (Esta es la interfaz gráfica)
