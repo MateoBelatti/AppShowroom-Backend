@@ -19,7 +19,7 @@ namespace biblioteca
         {
             // Configuración de clase abstracta
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<clases.Producto>().UseTptMappingStrategy();
+            modelBuilder.Entity<clases.Producto>().UseTpcMappingStrategy();
 
         }
     }

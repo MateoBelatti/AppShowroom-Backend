@@ -53,7 +53,7 @@ builder.Services.AddAutoMapper(cfg =>
 
 // Inyeccion de base de datos
 builder.Services.AddDbContext<CanelaContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("canelaConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("canelaConnection")));
 
 // JWT Authentication
 
@@ -91,17 +91,17 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    using (var scope = app.Services.CreateScope())
-    {
-        var services = scope.ServiceProvider;
-        var context = services.GetRequiredService<CanelaContext>();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<CanelaContext>();
 
-        // Aplica las migraciones pendientes al iniciar la aplicación
-        // uso mientras esta en desarrollo
-        context.Database.Migrate();
-    }
+    // Aplica las migraciones pendientes al iniciar la aplicación
+    // uso mientras esta en desarrollo
+    context.Database.Migrate();
+}
+if (app.Environment.IsDevelopment())
+
     app.MapOpenApi();
     app.UseSwagger(); // 👈 AGREGA ESTA LÍNEA
     app.UseSwaggerUI(); // 👈 AGREGA ESTA LÍNEA (Esta es la interfaz gráfica)
