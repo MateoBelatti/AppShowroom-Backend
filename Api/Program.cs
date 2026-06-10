@@ -100,7 +100,7 @@ using (var scope = app.Services.CreateScope())
     // uso mientras esta en desarrollo
     context.Database.Migrate();
 }
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()) { 
 
     app.MapOpenApi();
     app.UseSwagger(); // 👈 AGREGA ESTA LÍNEA
