@@ -53,7 +53,7 @@ builder.Services.AddAutoMapper(cfg =>
 
 // Inyeccion de base de datos
 builder.Services.AddDbContext<CanelaContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("canelaConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // JWT Authentication
 
