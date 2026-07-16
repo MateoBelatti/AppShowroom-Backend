@@ -79,9 +79,10 @@ builder.Services.AddAuthorization();
 // CORS — permitir el frontend
 builder.Services.AddCors(options => {
     options.AddPolicy("Frontend", policy =>
-      policy.WithOrigins("http://localhost:5173")
+      policy.WithOrigins("http://localhost:5173", "https://canelaartesanias.vercel.app")
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod()
+            .AllowCredentials());
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
