@@ -1,5 +1,4 @@
-﻿using Api.Extensions;
-using biblioteca.dtos.usuario;
+﻿using biblioteca.dtos.usuario;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.usuarios;
@@ -28,7 +27,7 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> FindById(int id)
         {
-            var usuario = await _usuarioService.findById(id, User.GetUsuarioId(), User.IsInRole("Admin"));
+            var usuario = await _usuarioService.findById(id);
             return usuario is null ? NotFound() : Ok(usuario);
         }
         // POST: /api/usuario
@@ -44,7 +43,7 @@ namespace Api.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UsuarioUpdateDto dataDto)
         {
 
-            var usuarioActualizado = await _usuarioService.update(id, dataDto, User.GetUsuarioId(), User.IsInRole("Admin"));
+            var usuarioActualizado = await _usuarioService.update(id, dataDto);
             return usuarioActualizado is null ? NotFound() : Ok(usuarioActualizado);
         }
         // DELETE: /api/usuario/5

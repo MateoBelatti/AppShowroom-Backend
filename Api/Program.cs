@@ -1,3 +1,4 @@
+using Api.Identity;
 using Api.Middlewares;
 using biblioteca;
 using biblioteca.mappers;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
+using Services;
 using Services.Services.auth;
 using Services.Services.carrito;
 using Services.Services.categoria;
@@ -19,6 +21,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+// Identidad del request (la capa Api implementa el contrato de Services)
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 // Inyección de Interfaces y Servicios
 builder.Services.AddScoped<IProductoService, ProductoService>();

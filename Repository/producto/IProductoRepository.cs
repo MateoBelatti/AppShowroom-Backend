@@ -8,6 +8,7 @@ namespace Repository
     {
         Task<IEnumerable<Producto>> GetAll();
         Task<IEnumerable<Producto>> GetAllActivos();
+        Task<IEnumerable<Producto>> GetAllActivosByCategoria(int categoriaId);
         Task<Producto?> GetById(int id);
         Task<Producto> Create(Producto entity);
         Task<Producto> Update(Producto entity);

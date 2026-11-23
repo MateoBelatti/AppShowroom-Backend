@@ -11,12 +11,12 @@ Repo: `AppShowroom-Backend` · rama principal `master` · trabajo en `dev`. Cont
 | `Repository` | `Repository/<dominio>/I<X>Repository.cs` + `<X>Repository.cs` (único lugar que usa `CanelaContext`) | biblioteca |
 | `biblioteca` | `clases/` (entidades), `dtos/<dominio>/` (`XDto`, `XCreateDto`, `XUpdateDto`), `mappers/` (AutoMapper `Profile`), `types/` (enums `Rol`, `typeProducto`), `Errors/`, `CanelaContext.cs`, `Migrations/` | — |
 
-**Regla de capas:** Controller → Service → Repository → DbContext. Un controller nunca toca el `DbContext`; un service nunca devuelve entidades al controller, devuelve DTOs.
+**Regla de capas:** Controller → Service → Repository → DbContext. Un controller nunca toca el `DbContext`; un service nunca devuelve entidades al controller, devuelve DTOs. La identidad del request se expone a Services con `Services.ICurrentUser` (implementado en `Api/Identity/CurrentUser.cs`): los controllers no pasan claims ni ids del JWT a los services.
 
 ## Convenciones observadas
 
 - Rutas: `api/[controller]`; las clases de controller están en minúscula (`authController` → `/api/auth`). Dominios: `usuario`, `producto`, `categoria`, `carrito`, `detalleCarrito`, `auth`.
-- Errores de negocio: `throw new AppException(mensaje, statusCode, "Clase.metodo")` (namespace `Api.Errors`). El middleware los serializa a JSON.
+- Errores de negocio: `throw new AppException(mensaje, statusCode, "Clase.metodo")` (namespace `biblioteca.Errors`). El middleware los serializa a JSON.
 - Autorización por rol: `[Authorize(Roles = "Admin")]`.
 - Borrado de producto = borrado lógico (`Activo = false`). El registro de usuario fuerza `Rol.User`.
 - Nombres: el código actual mezcla camelCase (`findById`, `create` en services) y PascalCase (`GetAll`, `FindByEmail` en repos). **No hagas renames masivos.** El código nuevo va en PascalCase.

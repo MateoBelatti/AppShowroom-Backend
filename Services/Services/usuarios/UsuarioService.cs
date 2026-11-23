@@ -14,17 +14,22 @@ namespace Services.Services.usuarios
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
+        private readonly ICurrentUser _currentUser;
+
         public UsuarioService(
             IUsuarioRepository usuarioRepository,
-            IMapper mapper
+            IMapper mapper,
+            ICurrentUser currentUser
             )
         {
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
+            _currentUser = currentUser;
         }
-        private static void ValidarAcceso(int id, int idUsuarioActual, bool esAdmin, string origen)
+
+        private void ValidarAcceso(int id, string origen)
         {
-            if (id == idUsuarioActual || esAdmin) return;
+            if (id == _currentUser.UsuarioId || _currentUser.EsAdmin) return;
 
             throw new AppException("No tenés permiso para acceder a este usuario.", 403, origen);
         }
@@ -60,17 +65,17 @@ namespace Services.Services.usuarios
             return _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
         }
 
-        public async Task<UsuarioDto?> findById(int id, int idUsuarioActual, bool esAdmin)
+        public async Task<UsuarioDto?> findById(int id)
         {
-            ValidarAcceso(id, idUsuarioActual, esAdmin, "UsuarioService.findById");
+            ValidarAcceso(id, "UsuarioService.findById");
             var usuario = await _usuarioRepository.FindById(id);
             if (usuario is null) return null;
             return _mapper.Map<UsuarioDto>(usuario);
         }
 
-        public async Task<UsuarioDto?> update(int id, UsuarioUpdateDto data, int idUsuarioActual, bool esAdmin)
+        public async Task<UsuarioDto?> update(int id, UsuarioUpdateDto data)
         {
-            ValidarAcceso(id, idUsuarioActual, esAdmin, "UsuarioService.update");
+            ValidarAcceso(id, "UsuarioService.update");
             var usuarioExistente = await _usuarioRepository.FindById(id);
             if (usuarioExistente is null) 
             {

@@ -70,10 +70,8 @@ namespace Services.Services.producto
             {
                 throw new AppException("No se encontraron resultados para la categoria especificada", 404, "ProductoService.findByCategoria");
             }
-            var productos = await _productoRepository.GetAllActivos();
-
-            var filtrados = productos.Where(p => p.Categorias.Any(c => c.Id == idCategoria));
-            return _mapper.Map<IEnumerable<ProductoDto>>(filtrados);
+            var productos = await _productoRepository.GetAllActivosByCategoria(idCategoria);
+            return _mapper.Map<IEnumerable<ProductoDto>>(productos);
         }
 
         public async Task<ProductoDto?> findById(int id)

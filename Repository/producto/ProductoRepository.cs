@@ -48,6 +48,14 @@ namespace Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Producto>> GetAllActivosByCategoria(int categoriaId)
+        {
+            return await _context.Productos
+                .Where(p => p.Activo && p.Categorias.Any(c => c.Id == categoriaId))
+                .Include(p => p.Categorias)
+                .ToListAsync();
+        }
+
         public async Task<Producto?> GetById(int id)
         {
             return await _context.Productos

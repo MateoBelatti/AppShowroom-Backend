@@ -35,12 +35,15 @@ namespace Repository
         {
             return await _context.DetallesCarrito
                 .Where(d => d.CarritoID == carritoId)
+                .Include(d => d.Producto)
                 .ToArrayAsync();
         }
 
         public async Task<DetalleCarrito?> GetById(int id)
         {
-            return await _context.DetallesCarrito.FirstOrDefaultAsync(d => d.Id == id);
+            return await _context.DetallesCarrito
+                .Include(d => d.Producto)
+                .FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<DetalleCarrito> Update(DetalleCarrito entity)
