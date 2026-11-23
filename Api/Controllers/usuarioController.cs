@@ -1,4 +1,6 @@
-﻿using biblioteca.dtos.usuario;
+﻿using Api.Extensions;
+using biblioteca.dtos.usuario;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.usuarios;
 
@@ -6,6 +8,7 @@ namespace Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class usuarioController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;
@@ -14,6 +17,7 @@ namespace Api.Controllers
             _usuarioService = usuarioService;
         }
         // GET: /api/usuario
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -24,10 +28,11 @@ namespace Api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> FindById(int id)
         {
-            var usuario = await _usuarioService.findById(id);
+            var usuario = await _usuarioService.findById(id, User.GetUsuarioId(), User.IsInRole("Admin"));
             return usuario is null ? NotFound() : Ok(usuario);
         }
         // POST: /api/usuario
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] UsuarioCreateDto dataDto)
         {
@@ -39,10 +44,11 @@ namespace Api.Controllers
         public async Task<IActionResult> Update(int id, [FromBody] UsuarioUpdateDto dataDto)
         {
 
-            var usuarioActualizado = await _usuarioService.update(id, dataDto);
+            var usuarioActualizado = await _usuarioService.update(id, dataDto, User.GetUsuarioId(), User.IsInRole("Admin"));
             return usuarioActualizado is null ? NotFound() : Ok(usuarioActualizado);
         }
         // DELETE: /api/usuario/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

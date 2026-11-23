@@ -16,68 +16,108 @@ namespace Services.Services.detalleCarrito
     {
         private readonly IDetalleCarritoRepository _detalleCarritoRepository;
         private readonly ICarritoService _carritoService;
+        private readonly ICarritoRepository _carritoRepository;
         private readonly IMapper _mapper;
 
         public DetalleCarritoService(
             ICarritoService carritoService,
+            ICarritoRepository carritoRepository,
             IDetalleCarritoRepository detalleCarritoRepository,
             IMapper mapper
             )
         {
             _carritoService = carritoService;
+            _carritoRepository = carritoRepository;
             _detalleCarritoRepository = detalleCarritoRepository;
             _mapper = mapper;
         }
 
-        public async Task<DetalleCarritoDto> create(DetalleCarritoCreateDto detalleCarrito)
+        private static void ValidarPropietario(Carrito carrito, int idUsuarioActual, string origen)
         {
-            if (!(await ValidarCarritoExistente(detalleCarrito.CarritoID)))
+            if (carrito.UsuarioID == idUsuarioActual) return;
+
+            throw new AppException("No tenés permiso para acceder a este carrito.", 403, origen);
+        }
+
+        private async Task ValidarCarrito(int idCarrito, int idUsuarioActual, string origen)
+        {
+            var carrito = await _carritoRepository.GetById(idCarrito);
+            if (carrito is null)
             {
-                Console.WriteLine("El carrito no existe");
-              var carrito = await _carritoService.create(new CarritoCreateDto { UsuarioId = detalleCarrito.UsuarioId });
-                detalleCarrito.CarritoID = carrito.Id;
+                throw new AppException("No se encontró el carrito especificado.", 404, origen);
             }
+
+            ValidarPropietario(carrito, idUsuarioActual, origen);
+        }
+
+        private async Task<int> ResolverCarritoId(int carritoIdSolicitado, int idUsuarioActual)
+        {
+            if (carritoIdSolicitado > 0)
+            {
+                var carritoSolicitado = await _carritoRepository.GetById(carritoIdSolicitado);
+                if (carritoSolicitado is not null)
+                {
+                    ValidarPropietario(carritoSolicitado, idUsuarioActual, "DetalleCarritoService.create");
+                    return carritoSolicitado.Id;
+                }
+            }
+
+            var carritoDelUsuario = await _carritoRepository.GetByUsuarioId(idUsuarioActual);
+            if (carritoDelUsuario is not null)
+            {
+                return carritoDelUsuario.Id;
+            }
+
+            var carritoNuevo = await _carritoService.create(idUsuarioActual);
+            return carritoNuevo.Id;
+        }
+
+        public async Task<DetalleCarritoDto> create(DetalleCarritoCreateDto detalleCarrito, int idUsuarioActual)
+        {
+            var carritoId = await ResolverCarritoId(detalleCarrito.CarritoID, idUsuarioActual);
+
+            detalleCarrito.UsuarioId = idUsuarioActual;
+            detalleCarrito.CarritoID = carritoId;
+
             var detalleCrear = _mapper.Map<DetalleCarrito>(detalleCarrito);
             var detalleCreado = await _detalleCarritoRepository.Create(detalleCrear);
             return _mapper.Map<DetalleCarritoDto>(detalleCreado);
         }
 
-        public async Task<bool> delete(int idDetalleCarrito)
+        public async Task<bool> delete(int idDetalleCarrito, int idUsuarioActual)
         {
             var detalleExistente = await _detalleCarritoRepository.GetById(idDetalleCarrito);
             if (detalleExistente is null)
             {
                 return false;
             }
+
+            await ValidarCarrito(detalleExistente.CarritoID, idUsuarioActual, "DetalleCarritoService.delete");
             await _detalleCarritoRepository.Delete(idDetalleCarrito);
             return true;
         }
 
-        public async Task<IEnumerable<DetalleCarritoDto>> findAllByIdCarrito(int idCarrito)
+        public async Task<IEnumerable<DetalleCarritoDto>> findAllByIdCarrito(int idCarrito, int idUsuarioActual)
         {
+            await ValidarCarrito(idCarrito, idUsuarioActual, "DetalleCarritoService.findAllByIdCarrito");
+
             var detalles = await _detalleCarritoRepository.FindByCarritoID(idCarrito);
             return _mapper.Map<IEnumerable<DetalleCarritoDto>>(detalles);
         }
 
-        public async Task<DetalleCarritoDto> Update(DetalleCarritoUpdateDto detalleCarrito)
+        public async Task<DetalleCarritoDto> Update(DetalleCarritoUpdateDto detalleCarrito, int idUsuarioActual)
         {
-            Console.WriteLine("Estamos en update del detalle");
             var detalleExistente = await _detalleCarritoRepository.GetById(detalleCarrito.Id);
             if (detalleExistente is null)
             {
                 throw new AppException("No se encontro un DetalleCarrito para actualizar", 404, "DetalleCarritoService.Update");
             }
+
+            await ValidarCarrito(detalleExistente.CarritoID, idUsuarioActual, "DetalleCarritoService.Update");
+
             _mapper.Map(detalleCarrito, detalleExistente);
             var detalleActualizado = await _detalleCarritoRepository.Update(detalleExistente);
-            Console.WriteLine(detalleActualizado);
             return _mapper.Map<DetalleCarritoDto>(detalleActualizado);
-        }
-
-        private async Task<bool> ValidarCarritoExistente(int idCarrito)
-        {
-            var carrito = await _carritoService.findById(idCarrito);
-            if (carrito is null) return false;
-            return true;
         }
     }
 }

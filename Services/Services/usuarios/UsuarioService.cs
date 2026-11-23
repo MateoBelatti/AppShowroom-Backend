@@ -22,6 +22,13 @@ namespace Services.Services.usuarios
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
         }
+        private static void ValidarAcceso(int id, int idUsuarioActual, bool esAdmin, string origen)
+        {
+            if (id == idUsuarioActual || esAdmin) return;
+
+            throw new AppException("No tenés permiso para acceder a este usuario.", 403, origen);
+        }
+
         public async Task<UsuarioDto> create(UsuarioCreateDto usuario)
         {
             var userVerificar = await _usuarioRepository.FindByEmail(usuario.Email);
@@ -53,15 +60,17 @@ namespace Services.Services.usuarios
             return _mapper.Map<IEnumerable<UsuarioDto>>(usuarios);
         }
 
-        public async Task<UsuarioDto?> findById(int id)
+        public async Task<UsuarioDto?> findById(int id, int idUsuarioActual, bool esAdmin)
         {
+            ValidarAcceso(id, idUsuarioActual, esAdmin, "UsuarioService.findById");
             var usuario = await _usuarioRepository.FindById(id);
             if (usuario is null) return null;
             return _mapper.Map<UsuarioDto>(usuario);
         }
 
-        public async Task<UsuarioDto?> update(int id, UsuarioUpdateDto data)
+        public async Task<UsuarioDto?> update(int id, UsuarioUpdateDto data, int idUsuarioActual, bool esAdmin)
         {
+            ValidarAcceso(id, idUsuarioActual, esAdmin, "UsuarioService.update");
             var usuarioExistente = await _usuarioRepository.FindById(id);
             if (usuarioExistente is null) 
             {
