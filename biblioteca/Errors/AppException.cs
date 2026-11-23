@@ -1,4 +1,4 @@
-﻿namespace Api.Errors
+﻿namespace biblioteca.Errors
 {
     public class AppException : Exception
     {

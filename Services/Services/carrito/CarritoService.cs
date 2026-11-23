@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Repository;
 using AutoMapper;
 using Services.Services.detalleCarrito;
-using Api.Errors;
+using biblioteca.Errors;
 
 namespace Services.Services.carrito
 {
@@ -73,7 +73,7 @@ namespace Services.Services.carrito
             return true;
         }
 
-        public async Task<CarritoDto> findById(int id, int idUsuarioActual)
+        public async Task<CarritoDto?> findById(int id, int idUsuarioActual)
         {
             var carrito = await _carritoRepository.GetById(id);
             if (carrito == null) return null;
@@ -90,7 +90,7 @@ namespace Services.Services.carrito
             return carritoDto;
         }
 
-        public async Task<CarritoDto> findByIdUsuario(int idUsuario, int idUsuarioActual)
+        public async Task<CarritoDto?> findByIdUsuario(int idUsuario, int idUsuarioActual)
         {
             if (idUsuario != idUsuarioActual)
             {

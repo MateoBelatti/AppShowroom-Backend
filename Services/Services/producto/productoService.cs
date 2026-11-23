@@ -1,14 +1,8 @@
 ﻿using biblioteca.clases;
 using biblioteca.dtos.producto;
-using biblioteca.mappers;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using biblioteca.Errors;
 using Repository;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore.Query;
-using System.Reflection.Metadata.Ecma335;
-using Api.Errors;
 
 namespace Services.Services.producto
 {
@@ -85,17 +79,8 @@ namespace Services.Services.producto
         public async Task<ProductoDto?> findById(int id)
         {
             var producto = await _productoRepository.GetById(id);
-            if (producto is null) return null; 
-            if (producto.Categorias != null && producto.Categorias.Any())
-            {
-                var nombresCategorias = string.Join(", ", producto.Categorias.Select(c => c.Nombre));
-                Console.WriteLine($"Este es el producto (Categorías): {nombresCategorias} ");
-            }
-            else
-            {
-                Console.WriteLine("Este es el producto: No tiene categorías asociadas.");
-            }
             if (producto is null) return null;
+
             return _mapper.Map<ProductoDto>(producto);
         }
 

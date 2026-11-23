@@ -37,7 +37,7 @@ export Google__ClientId="<client id de Google>"
 
 ### Secretos y configuración
 
-`Api/appsettings.json` y `Api/appsettings.Development.json` **no se versionan** (están en `.gitignore`). Si por error aparecen en un clone nuevo, no están: la configuración va por variables de entorno (`__`) o por user-secrets en local. El project ID para user-secrets ya está en `Api/Api.csproj`:
+`Api/appsettings.json` y `Api/appsettings.Development.json` están en `.gitignore` y la configuración va por variables de entorno (`__`) o por user-secrets en local. Ojo: `git ls-files` todavía los lista como versionados (ver problema 1 más abajo). El project ID para user-secrets ya está en `Api/Api.csproj`:
 
 ```bash
 dotnet user-secrets --project Api set "ConnectionStrings:DefaultConnection" "Host=localhost;Port=5432;Database=appshow;Username=postgres;Password=dev"
@@ -57,12 +57,13 @@ Migraciones: usá la skill `migracion-ef`. **`dotnet ef database update` está d
 
 ## Problemas conocidos (verificados leyendo el código)
 
-1. **Secretos versionados:** `Api/appsettings.json` (connection string de Supabase con password) y `Api/appsettings.Development.json` (JWT secret) están en git y en el historial. Hay que rotarlos.
-2. **Sin `[Authorize]`:** `usuarioController` completo (listar todos los usuarios, editar y borrar cualquiera), `carritoController` y `detalleCarritoController`. Hay que exigir token y validar que el `id` del JWT sea el dueño del recurso. `POST /api/usuario` (registro) tiene que seguir anónimo.
-3. **Claim de rol:** el JWT usa el claim `rol` y `Program.cs` no define `RoleClaimType`. Probablemente `[Authorize(Roles = "Admin")]` no reconozca el rol: **verificar con un login de admin** y, si falla, agregar `RoleClaimType = "rol"` en `TokenValidationParameters`.
-4. **`DateTime.Now`** en `CarritoService.update` (`UltimaVez`) con columna `timestamp with time zone`: Npgsql rechaza `Kind=Local`. Cambiar a `DateTime.UtcNow`. Además `FechaCreacion` del carrito no se setea al crear.
+1. **Secretos en git:** aunque `Api/appsettings.json` y `Api/appsettings.Development.json` están en `.gitignore`, `git ls-files` todavía los lista como versionados. No se leyó su contenido (acceso bloqueado). Acción: `git rm --cached` de ambos y rotar cualquier credencial que haya quedado en el historial.
+2. **Autorización ya corregida (2026-11-23):** `usuarioController`, `carritoController` y `detalleCarritoController` tienen `[Authorize]`; el registro sigue con `[AllowAnonymous]`; los servicios validan dueño con `ValidarAcceso` / `ValidarPropietario`. Pendiente: centralizar esa validación (hoy está repetida en tres services y los controllers pasan claims).
+3. **Claim de rol ya corregido:** `Program.cs` define `RoleClaimType = "rol"`. Falta verificarlo con un login de admin real.
+4. **Fechas ya corregidas:** `CarritoService` usa `DateTime.UtcNow` y setea `FechaCreacion` / `UltimaVez` al crear.
 5. **`Database.Migrate()` al arrancar** (`Program.cs`): aceptable en desarrollo, riesgoso en producción.
 6. **Sin tests** y sin CI.
+7. **Dependencias con alertas `NU1903`** en el build: AutoMapper 16.1.1 (dos advisories) y Microsoft.OpenApi 2.4.1. Actualizar versiones.
 
 ## Pendiente de producto
 

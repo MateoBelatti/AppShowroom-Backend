@@ -1,6 +1,5 @@
 ﻿using biblioteca.dtos.auth;
 using Google.Apis.Auth;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Services.Services.auth;
 
@@ -21,10 +20,6 @@ public class authController : ControllerBase
     public async Task<IActionResult> Login([FromBody] LoginDto request)
     {
         var token = await _authService.Login(request);
-        if (token == null)
-        {
-            return Unauthorized("Credenciais inválidas");
-        }
         return Ok(new { token });
     }
     public record GoogleLoginRequest(string IdToken);

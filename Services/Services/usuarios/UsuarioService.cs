@@ -1,4 +1,4 @@
-﻿using Api.Errors;
+﻿using biblioteca.Errors;
 using AutoMapper;
 using biblioteca.clases;
 using biblioteca.dtos.usuario;

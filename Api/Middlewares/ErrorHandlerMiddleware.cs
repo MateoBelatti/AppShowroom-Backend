@@ -1,4 +1,4 @@
-﻿using Api.Errors;
+﻿using biblioteca.Errors;
 using System.Text.Json;
 
 namespace Api.Middlewares

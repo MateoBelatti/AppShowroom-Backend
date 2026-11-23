@@ -10,7 +10,7 @@ namespace Services.Services.categoria
     public interface ICategoriaService
     {
         public Task<IEnumerable<CategoriaDto>> findAll();
-        public Task<CategoriaDto> findById(int id);
+        public Task<CategoriaDto?> findById(int id);
         public Task<CategoriaDto> create(CategoriaCreateDto data);
         public Task<CategoriaDto> update(int idCat, CategoriaUpdateDto data);
         public Task<bool> delete(int idCategoria);

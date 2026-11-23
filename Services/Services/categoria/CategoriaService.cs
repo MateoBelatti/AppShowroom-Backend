@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Api.Errors;
+using biblioteca.Errors;
 using AutoMapper;
 using biblioteca.clases;
 using biblioteca.dtos.categoria;
@@ -45,7 +45,7 @@ namespace Services.Services.categoria
             return _mapper.Map<IEnumerable<CategoriaDto>>(categorias);
         }
 
-        public async Task<CategoriaDto> findById(int id)
+        public async Task<CategoriaDto?> findById(int id)
         {
             var result = await _categoriaRepository.GetById(id);
             return _mapper.Map<CategoriaDto>(result);
