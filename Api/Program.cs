@@ -11,7 +11,6 @@ using Services.Services.categoria;
 using Services.Services.detalleCarrito;
 using Services.Services.producto;
 using Services.Services.usuarios;
-using Services.Services.vela;
 using System.Text;
 
 
@@ -27,7 +26,6 @@ builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IDetalleCarritoService, DetalleCarritoService>();
 builder.Services.AddScoped<ICarritoService, CarritoService>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
-builder.Services.AddScoped<IVelaService, VelaService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthGoogleService, AuthGoogleService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
@@ -38,7 +36,6 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IDetalleCarritoRepository, DetalleCarritoRepository>();
 builder.Services.AddScoped<ICarritoRepository, CarritoRepository>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<IVelaRepository, VelaRepository>();
 
 // Inyeccion de Mappers
 builder.Services.AddAutoMapper(cfg =>
@@ -48,7 +45,6 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.AddProfile<UsuarioProfile>();
     cfg.AddProfile<DetalleCarritoProfile>();
     cfg.AddProfile<CarritoProfile>();
-    cfg.AddProfile<VelaProfile>();
 });
 
 // Inyeccion de base de datos

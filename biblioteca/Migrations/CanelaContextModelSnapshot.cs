@@ -138,8 +138,6 @@ namespace biblioteca.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Productos");
-
-                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("biblioteca.clases.Usuario", b =>
@@ -176,20 +174,6 @@ namespace biblioteca.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("biblioteca.clases.Vela", b =>
-                {
-                    b.HasBaseType("biblioteca.clases.Producto");
-
-                    b.Property<string>("Aroma")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("CantidadCl")
-                        .HasColumnType("numeric");
-
-                    b.ToTable("Velas");
                 });
 
             modelBuilder.Entity("CategoriaProducto", b =>
@@ -235,15 +219,6 @@ namespace biblioteca.Migrations
                     b.Navigation("Carrito");
 
                     b.Navigation("Producto");
-                });
-
-            modelBuilder.Entity("biblioteca.clases.Vela", b =>
-                {
-                    b.HasOne("biblioteca.clases.Producto", null)
-                        .WithOne()
-                        .HasForeignKey("biblioteca.clases.Vela", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("biblioteca.clases.Carrito", b =>
