@@ -10,7 +10,6 @@ namespace biblioteca.mappers
         public CarritoProfile()
         {
             CreateMap<clases.Carrito, dtos.carrito.CarritoDto>();
-            CreateMap<dtos.carrito.CarritoCreateDto, clases.Carrito>();
         }
     }
 }
