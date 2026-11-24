@@ -3,4 +3,5 @@
   <Project Path="biblioteca/biblioteca.csproj" Id="bd055fe6-fbe3-4126-be6a-7564e021c87b" />
   <Project Path="Repository/Repository.csproj" Id="8e1d0dca-1f5f-4f28-b142-323ab6b9b55f" />
   <Project Path="Services/Services.csproj" Id="6e32e74d-0be0-4aea-89d9-9fbba63fe70b" />
+  <Project Path="Tests/Tests.csproj" />
 </Solution>
