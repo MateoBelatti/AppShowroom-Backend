@@ -90,6 +90,19 @@ namespace Services.Services.producto
                 throw new AppException("No se encontró el producto especificado", 404, "ProductoService.update");
             }
             _mapper.Map(producto, productoExistente);
+            if (producto.CategoriasIds != null)
+            {
+                var categorias = await _categoriaRepository.GetAllByIds(producto.CategoriasIds);
+                if (categorias.Count() != producto.CategoriasIds.Count())
+                {
+                    throw new AppException("Una o mas categorias no existen", 400, "ProductoService.update");
+                }
+                productoExistente.Categorias.Clear();
+                foreach (var categoria in categorias)
+                {
+                    productoExistente.Categorias.Add(categoria);
+                }
+            }
             var productoActualizado = await _productoRepository.Update(productoExistente);
             return _mapper.Map<ProductoDto>(productoActualizado);
 
